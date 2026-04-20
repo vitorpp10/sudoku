@@ -2,12 +2,17 @@ Arquitetura das pastas:
 ```
 sudoku
     app/
+        main.cpp
+        menu.cpp
+        menu.hpp
     assets/
     documentacao/
 ``` 
 
 Para compilar programa: 
-`g++ main.cpp -o sudoku -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system -std=c++17`
+`g++ *.cpp -o sudoku -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system -std=c++20`
+
+`*.cpp`: *pegar todos os arquivos com final .cpp*
 
 Para importar bibliotecas:
 `#include<SMFL/Graphics.hpp>`

@@ -1,0 +1,22 @@
+#pragma once //para o compilador nao executar duas vezes
+#include<SFML/Audio.hpp>
+#include<SFML/Graphics.hpp> 
+#include<optional> // encapsular coisas de outros arquivos 
+
+enum class Tela { Menu, Jogo };
+
+class Menu {
+  private:
+    sf::Font font;
+    sf::Text titulo;
+    sf::Text label_jogar;
+    sf::RectangleShape botao_jogar;
+    sf::Music music;
+    sf::Clock clock;
+  public:
+    Menu(const sf::Vector2u& windowSize);
+
+    void tratarEventos(const sf::Event& event, const sf::RenderWindow& window, Tela& tela_atual);
+    void atualizar();
+    void desenhar(sf::RenderWindow& window);
+};  
