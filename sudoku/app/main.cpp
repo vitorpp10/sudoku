@@ -1,6 +1,7 @@
 #include<SFML/Graphics.hpp>
 #include<cstdlib>
-#include "menu.hpp" // incluimos menu hpp aqui
+#include"menu.hpp" // incluimos menu hpp aqui
+#include"jogo.hpp" 
 
 int main() {
     // cria a janela
@@ -11,6 +12,7 @@ int main() {
 
     // criamos o nosso menu
     Menu menuPrincipal(window.getSize());
+    Jogo jogo(window.getSize());
 
     // loop infinito da janela
     while (window.isOpen()) {
@@ -24,6 +26,8 @@ int main() {
             // se estivermos no menu, passamos os eventos para ele tratar
             if (tela_atual == Tela::Menu) {
                 menuPrincipal.tratarEventos(*event, window, tela_atual);
+            } else if (tela_atual == Tela::Jogo) {
+              jogo.tratarEventos(*event, window, tela_atual);
             }
         } 
 
@@ -35,7 +39,10 @@ int main() {
             menuPrincipal.atualizar();
             menuPrincipal.desenhar(window);
         } 
-        else if (tela_atual == Tela::Jogo) {}
+        else if (tela_atual == Tela::Jogo) {
+          jogo.atualizar();
+          jogo.desenhar(window);
+        }
         
         window.display();
     }  

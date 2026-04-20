@@ -1,9 +1,8 @@
 #pragma once //para o compilador nao executar duas vezes
 #include<SFML/Audio.hpp>
 #include<SFML/Graphics.hpp> 
+#include"def.hpp"
 #include<optional> // encapsular coisas de outros arquivos 
-
-enum class Tela { Menu, Jogo };
 
 class Menu {
   private:

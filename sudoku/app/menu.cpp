@@ -1,4 +1,4 @@
-#include "menu.hpp"
+#include"menu.hpp"
 #include<cmath>
 #include<iostream>
 #include<cstdlib>
@@ -40,6 +40,7 @@ Menu::Menu(const sf::Vector2u& windowSize)
     label_jogar.setPosition(botao_jogar.getPosition());
 }
 
+//tratar eventos
 void Menu::tratarEventos(const sf::Event& event, const sf::RenderWindow& window, Tela& tela_atual) {
     // pega clique do mouse
     if (event.is<sf::Event::MouseButtonPressed>()) {
@@ -55,6 +56,7 @@ void Menu::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
     }
 }
 
+//animacoes
 void Menu::atualizar() {
     // lógica do pulsar
     float tempo = clock.getElapsedTime().asSeconds();
