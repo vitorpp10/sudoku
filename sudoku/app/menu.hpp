@@ -8,8 +8,8 @@ class Menu {
   private:
     sf::Font font;
     sf::Text titulo;
-    sf::Text label_jogar;
-    sf::RectangleShape botao_jogar;
+    sf::Text label_jogar, label_opcoes;
+    sf::RectangleShape botao_jogar, botao_opcoes;
     sf::Music music;
     sf::Clock clock;
   public:
