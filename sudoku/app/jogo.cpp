@@ -70,7 +70,7 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
   botao_voltar.setFillColor(sf::Color::White);
   botao_voltar.setOutlineThickness(2);
   botao_voltar.setOutlineColor(purple);
-  botao_voltar.setOrigin({110.f, 27.5f});
+  botao_voltar.setOrigin({90.f, 27.5f});
   botao_voltar.setPosition({windowSize.x / 2.0f, 650.f});
 
   label_voltar.setString("Voltar");

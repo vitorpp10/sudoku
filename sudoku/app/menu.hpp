@@ -1,5 +1,4 @@
 #pragma once //para o compilador nao executar duas vezes
-#include<SFML/Audio.hpp>
 #include<SFML/Graphics.hpp> 
 #include"def.hpp"
 #include<optional> // encapsular coisas de outros arquivos 
@@ -10,7 +9,6 @@ class Menu {
     sf::Text titulo;
     sf::Text label_jogar, label_opcoes;
     sf::RectangleShape botao_jogar, botao_opcoes;
-    sf::Music music;
     sf::Clock clock;
   public:
     Menu(const sf::Vector2u& windowSize);

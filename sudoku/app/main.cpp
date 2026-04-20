@@ -1,7 +1,11 @@
 #include<SFML/Graphics.hpp>
+#include<SFML/Audio.hpp>
 #include<cstdlib>
 #include"menu.hpp" // incluimos menu hpp aqui
 #include"jogo.hpp" 
+#include"opcoes.hpp"
+
+sf::Music musicaGlobal;
 
 int main() {
     // cria a janela
@@ -13,6 +17,7 @@ int main() {
     // criamos o nosso menu
     Menu menuPrincipal(window.getSize());
     Jogo jogo(window.getSize());
+    Opcoes opcao(window.getSize());
 
     // loop infinito da janela
     while (window.isOpen()) {
@@ -28,6 +33,8 @@ int main() {
                 menuPrincipal.tratarEventos(*event, window, tela_atual);
             } else if (tela_atual == Tela::Jogo) {
               jogo.tratarEventos(*event, window, tela_atual);
+            } else if (tela_atual == Tela::Opcoes) {
+              opcao.tratarEventos(*event, window, tela_atual);
             }
         } 
 
@@ -42,8 +49,10 @@ int main() {
         else if (tela_atual == Tela::Jogo) {
           jogo.atualizar();
           jogo.desenhar(window);
+        } else if (tela_atual == Tela::Opcoes) {
+          opcao.atualizar();
+          opcao.desenhar(window);
         }
-        
         window.display();
     }  
     return EXIT_SUCCESS;
