@@ -32,6 +32,18 @@ void Janela() {
 }
 ```
 
+Capturar oque a pessoa digita:
+```
+ while (window.isOpen()) {
+        while (const std::optional event = window.pollEvent()) {
+            if (event->is<sf::Event::Closed>()) window.close();
+
+            if (const auto* textEvent = event->getIf<sf::Event::TextEntered>()) {
+                if (textEvent->unicode < 128) {
+                    char tecla = static_cast<char>(textEvent->unicode);
+}
+```
+
 Escrever texto:
 ```
 void Janela() {
