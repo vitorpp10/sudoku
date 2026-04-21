@@ -19,7 +19,7 @@ Menu::Menu(const sf::Vector2u& windowSize)
     titulo.setOrigin({bounds.size.x / 2.0f, bounds.size.y / 2.0f});
 
     // configura a música
-    if (!musicaGlobal.openFromFile("../assets/beyonce_fernanda.ogg")) {
+    if (!musicaGlobal.openFromFile("../assets/musica0.ogg")) {
         perror("erro na musica da fernanda");
         exit(EXIT_FAILURE);
     }

@@ -6,6 +6,7 @@
 #include"opcoes.hpp"
 
 sf::Music musicaGlobal;
+int musicaAtual = 0;
 
 int main() {
     // cria a janela

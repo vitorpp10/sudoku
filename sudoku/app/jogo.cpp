@@ -21,56 +21,56 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
   titulo.setOrigin({bounds.size.x / 2.0f, bounds.size.y / 2.0f});
 
   //botao facil
-  botao_facil.setSize({300.f, 60.f});
+  botao_facil.setSize({400.f, 80.f});
   botao_facil.setFillColor(sf::Color::White);
   botao_facil.setOutlineThickness(2);
   botao_facil.setOutlineColor(purple);
-  botao_facil.setOrigin({150.f, 30.f});
+  botao_facil.setOrigin({200.f, 40.f});
   botao_facil.setPosition({windowSize.x / 2.0f, 300.f});
 
   label_facil.setString("Facil");
-  label_facil.setCharacterSize(35);
+  label_facil.setCharacterSize(40);
   label_facil.setFillColor(purple);
   sf::FloatRect lb_f = label_facil.getLocalBounds();
   label_facil.setOrigin({lb_f.size.x / 2.0f, lb_f.size.y / 2.0f});
   label_facil.setPosition(botao_facil.getPosition());
 
   //botao medio
-  botao_medio.setSize({300.f, 60.f});
+  botao_medio.setSize({400.f, 80.f});
   botao_medio.setFillColor(sf::Color::White);
   botao_medio.setOutlineThickness(2);
   botao_medio.setOutlineColor(purple);
-  botao_medio.setOrigin({150.f, 30.f});
+  botao_medio.setOrigin({200.f, 40.f});
   botao_medio.setPosition({windowSize.x / 2.0f, 400.f});
 
   label_medio.setString("Medio");
-  label_medio.setCharacterSize(35);
+  label_medio.setCharacterSize(40);
   label_medio.setFillColor(purple);
   sf::FloatRect lb_m = label_medio.getLocalBounds();
   label_medio.setOrigin({lb_m.size.x / 2.0f, lb_m.size.y / 2.0f});
   label_medio.setPosition(botao_medio.getPosition());
 
   //botao dificil
-  botao_dificil.setSize({300.f, 60.f});
+  botao_dificil.setSize({400.f, 80.f});
   botao_dificil.setFillColor(sf::Color::White);
   botao_dificil.setOutlineThickness(2);
   botao_dificil.setOutlineColor(purple);
-  botao_dificil.setOrigin({150.f, 30.f});
+  botao_dificil.setOrigin({200.f, 40.f});
   botao_dificil.setPosition({windowSize.x / 2.0f, 500.f});
 
   label_dificil.setString("Dificil");
-  label_dificil.setCharacterSize(35);
+  label_dificil.setCharacterSize(40);
   label_dificil.setFillColor(purple);
   sf::FloatRect lb_d = label_dificil.getLocalBounds();
   label_dificil.setOrigin({lb_d.size.x / 2.0f, lb_d.size.y / 2.0f});
   label_dificil.setPosition(botao_dificil.getPosition());
 
   //botao voltar
-  botao_voltar.setSize({220.f, 55.f});
+  botao_voltar.setSize({300.f, 65.f});
   botao_voltar.setFillColor(sf::Color::White);
   botao_voltar.setOutlineThickness(2);
   botao_voltar.setOutlineColor(purple);
-  botao_voltar.setOrigin({90.f, 27.5f});
+  botao_voltar.setOrigin({150.f, 32.5f});
   botao_voltar.setPosition({windowSize.x / 2.0f, 650.f});
 
   label_voltar.setString("Voltar");
