@@ -123,7 +123,7 @@ void Opcoes::tratarEventos(const sf::Event& event, const sf::RenderWindow& windo
           musicaGlobal.play();
 
           if (listaMusicas[musicaAtual] == "musica0.ogg") {
-            label_musica.setString("Beyonce");
+            label_musica.setString("Rihanna 1");
             sf::FloatRect bounds = label_musica.getLocalBounds();
             label_musica.setOrigin({
               bounds.position.x + bounds.size.x / 2.f, 
@@ -131,7 +131,7 @@ void Opcoes::tratarEventos(const sf::Event& event, const sf::RenderWindow& windo
             });
             label_musica.setPosition(botao_musica.getPosition());
           } else if (listaMusicas[musicaAtual] == "musica1.ogg") { 
-            label_musica.setString("Rihanna");
+            label_musica.setString("Rihanna 2");
             sf::FloatRect bounds = label_musica.getLocalBounds();
             label_musica.setOrigin({
               bounds.position.x + bounds.size.x / 2.f, 

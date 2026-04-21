@@ -202,3 +202,65 @@ void Janela() {
     }
 } 
 ```
+
+Para criar quadrado do sudoku + formato + cor:
+```
+  //cores sudoku
+  sf::RectangleShape celula({TAM_CELULA, TAM_CELULA});
+  celula.setFillColor(sf::Color::Transparent);
+  celula.setOutlineColor(purple);
+  celula.setOutlineThickness(1.f); 
+
+  //desenho quadrado do sudoku
+  for (int i = 0; i < 9; i++) {
+    for (int j = 0; j < 9; j++) {
+      celula.setPosition({OFFSET.x + (j * TAM_CELULA), OFFSET.y + (i * TAM_CELULA)});
+      window.draw(celula);
+    }
+  }
+
+  //linhas verticas e horizontais desenho
+  for (int i = 0; i <= 9; i += 3) {
+    sf::RectangleShape linhaV(sf::Vector2f(4.f, TAM_CELULA * 9.f)); 
+    linhaV.setFillColor(purple);
+    linhaV.setPosition({OFFSET.x + (i * TAM_CELULA) - 2.f, OFFSET.y});
+    window.draw(linhaV);
+
+    sf::RectangleShape linhaH(sf::Vector2f(TAM_CELULA * 9.f, 4.f));
+    linhaH.setFillColor(purple);
+    linhaH.setPosition({OFFSET.x, OFFSET.y + (i * TAM_CELULA) - 2.f});
+    window.draw(linhaH);
+  }
+```
+
+Para centralizar numeros e quadrados na tela:
+```
+//nos construtores do jogo 
+sf::Vector2f tamanhoJanela = sf::Vector2f(windowSize.x, windowSize.y);
+
+// 2. Tamanho total do Sudoku (9 * 60)
+float tamanhoSudoku = 9 * TAM_CELULA; 
+
+// (LarguraJanela - LarguraSudoku) / 2
+OFFSET.x = (tamanhoJanela.x - tamanhoSudoku) / 2.f;
+OFFSET.y = (tamanhoJanela.y - tamanhoSudoku) / 2.f;
+
+//dentro do Jogo::Desenhar
+if (grade[i][j] != 0) {
+    textoNumero.setString(std::to_string(grade[i][j]));
+
+    // Centraliza o número (Lógica SFML 3.0)
+    sf::FloatRect bounds = textoNumero.getLocalBounds();
+    textoNumero.setOrigin({
+        bounds.position.x + bounds.size.x / 2.f, 
+        bounds.position.y + bounds.size.y / 2.f
+    });
+
+    // Posiciona no centro exato do quadradinho atual
+    textoNumero.setPosition({
+    OFFSET.x + (j * TAM_CELULA) + (TAM_CELULA / 2.f),
+        OFFSET.y + (i * TAM_CELULA) + (TAM_CELULA / 2.f)
+    });
+
+    window.draw(textoNumero);
+```
