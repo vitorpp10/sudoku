@@ -26,26 +26,26 @@ Menu::Menu(const sf::Vector2u& windowSize)
     musicaGlobal.play();
 
     //botao jogar
-    botao_jogar.setSize({300.f, 60.f});
+    botao_jogar.setSize({400.f, 80.f});
     botao_jogar.setFillColor(sf::Color::White);
     botao_jogar.setOutlineThickness(2);
     botao_jogar.setOutlineColor(purple);
-    botao_jogar.setOrigin({150.f, 30.f});
+    botao_jogar.setOrigin({200.f, 40.f});
     botao_jogar.setPosition({windowSize.x / 2.0f, 300.f});
 
     label_jogar.setString("Jogar");
-    label_jogar.setCharacterSize(35);
+    label_jogar.setCharacterSize(40);
     label_jogar.setFillColor(purple);
     sf::FloatRect lb = label_jogar.getLocalBounds();
     label_jogar.setOrigin({lb.size.x / 2.0f, lb.size.y / 2.0f});
     label_jogar.setPosition(botao_jogar.getPosition());
 
     //botao opcoes
-    botao_opcoes.setSize({300.f, 60.f});
+    botao_opcoes.setSize({400.f, 80.f});
     botao_opcoes.setFillColor(sf::Color::White);
     botao_opcoes.setOutlineThickness(2);
     botao_opcoes.setOutlineColor(purple);
-    botao_opcoes.setOrigin({150.f, 30.f});
+    botao_opcoes.setOrigin({200.f, 40.f});
     botao_opcoes.setPosition({windowSize.x / 2.0f, 400.f});
 
     label_opcoes.setString("Opcoes");
