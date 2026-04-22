@@ -97,19 +97,19 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
   label_voltar_jogo.setOrigin({lb_vj.size.x / 2.0f, lb_vj.size.y / 2.0f});
   label_voltar_jogo.setPosition(botao_voltar_jogo.getPosition());
 
-  //botao erro 
-  label_erro.setString("Erros: Ilimitado");
-  label_erro.setCharacterSize(25);
-  label_erro.setFillColor(sf::Color::Red);
-  sf::FloatRect lb_e = label_erro.getLocalBounds();
-  label_erro.setOrigin({lb_e.size.x, 0.f});
-  label_erro.setPosition({OFFSET.x + 540.f, OFFSET.y - 40.f});
-
-  sf::Vector2f tamanho_janela = sf::Vector2f(windowSize.x, windowSize.y);
+  //botao erro
+  
   float tamanho_sudoku = 9 * TAM_CELULA;
 
-  OFFSET.x = (tamanho_janela.x - tamanho_sudoku) / 2.f; 
-  OFFSET.y = (tamanho_janela.y - tamanho_sudoku) / 2.f;
+  OFFSET.x = (1920.f - tamanho_sudoku) / 2.f; 
+  OFFSET.y = (1080.f - tamanho_sudoku) / 2.f;
+
+  label_erro.setString("Erros: Ilimitado");
+  label_erro.setCharacterSize(30);
+  label_erro.setFillColor(sf::Color::Red);
+  sf::FloatRect lb_e = label_erro.getLocalBounds();
+  label_erro.setOrigin({0.f, 0.f});
+  label_erro.setPosition({50.f, OFFSET.y});
 } 
 
 //tratar eventos 
@@ -123,19 +123,35 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
         if (botao_facil.getGlobalBounds().contains(mousePosF)) {
           dificuldade_selecionada = Dificuldade::Facil;
           jogo_iniciado = true;     
-        } else if (botao_voltar.getGlobalBounds().contains(mousePosF)) {
-          tela_atual = Tela::Menu;
         } else if (botao_medio.getGlobalBounds().contains(mousePosF)) {
           dificuldade_selecionada = Dificuldade::Medio;
           jogo_iniciado = true;
         } else if (botao_dificil.getGlobalBounds().contains(mousePosF)) {
           dificuldade_selecionada = Dificuldade::Dificil;
           jogo_iniciado = true;
-        }
-      } 
+        } else if (botao_voltar.getGlobalBounds().contains(mousePosF)) {
+          tela_atual = Tela::Menu;
+        } 
+      }
+
       if (dificuldade_selecionada == Dificuldade::Facil) {
         if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
+          // POR ENQUANTO DEPOIS COLOCAR NOS 3 AQUI, LOGICA PARA POP UP CONFIRMANDO SE QUER SAIR
           tela_atual = Tela::Menu;
+          dificuldade_selecionada = Dificuldade::Nenhum;
+          jogo_iniciado = false;
+        }
+      } else if (dificuldade_selecionada == Dificuldade::Medio) {
+        if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
+          tela_atual = Tela::Menu;
+          dificuldade_selecionada = Dificuldade::Nenhum;
+          jogo_iniciado = false;
+        } 
+      } else if (dificuldade_selecionada == Dificuldade::Dificil) {
+        if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
+          tela_atual = Tela::Menu;
+          dificuldade_selecionada = Dificuldade::Nenhum;
+          jogo_iniciado = false;
         }
       }
     }
@@ -213,6 +229,20 @@ void Jogo::desenhar(sf::RenderWindow& window) {
     linhaH.setPosition({OFFSET.x, OFFSET.y + (i * TAM_CELULA) - 2.f});
     window.draw(linhaH);
     }
+
+    if (dificuldade_selecionada == Dificuldade::Facil) {
+      count_erros = 0;
+      label_erro.setString("Erros: Ilimitados");
+    } else if (dificuldade_selecionada == Dificuldade::Medio) {
+      count_erros = 0;
+      registrarErros(4);
+      label_erro.setString("Erros: " + std::to_string(count_erros) + "/5");
+    } else if (dificuldade_selecionada == Dificuldade::Dificil) {
+      count_erros = 0;
+      registrarErros(2);
+      label_erro.setString("Erros: " + std::to_string(count_erros) + "/3");      
+    } 
+
     window.draw(label_erro);
     window.draw(botao_voltar_jogo);
     window.draw(label_voltar_jogo);
