@@ -2,6 +2,7 @@
 #include"jogo.hpp"
 #include<cmath>
 #include<cstdlib>
+#include<string>
 
 Jogo::Jogo(const sf::Vector2u& windowSize) 
     : font("../assets/PressStart2P-Regular.ttf"), 
@@ -12,7 +13,9 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
       label_dificil(font),
       label_voltar(font),
       label_voltar_jogo(font),
-      label_erro(font)
+      label_erro(font),
+      label_volume_jogo(font),
+      label_musica_jogo(font)
 {
 
   //configura o titulo
@@ -82,32 +85,62 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
   label_voltar.setOrigin({lb_v.size.x / 2.0f, lb_v.size.y / 2.0f});
   label_voltar.setPosition(botao_voltar.getPosition());
 
-  //botao voltar jogo 
+  //botao volume 
+  botao_volume_jogo.setSize({300.f, 65.f});
+  botao_volume_jogo.setFillColor(sf::Color::White);
+  botao_volume_jogo.setOutlineThickness(2);
+  botao_volume_jogo.setOutlineColor(purple);
+  botao_volume_jogo.setOrigin({0.f, 0.f}); 
+  botao_volume_jogo.setPosition({50.f, OFFSET.y + 100.f});
+
+  label_volume_jogo.setString("Volume");
+  label_volume_jogo.setCharacterSize(30);
+  label_volume_jogo.setFillColor(purple);
+
+  sf::FloatRect lb_vvj = label_volume_jogo.getLocalBounds();
+  label_volume_jogo.setOrigin({lb_vvj.size.x / 2.0f, lb_vvj.size.y / 2.0f});
+  label_volume_jogo.setPosition({200.f, OFFSET.y + 132.5f});
+
+  //botao trocar musica 
+  botao_musica_jogo.setSize({300.f, 65.f});
+  botao_musica_jogo.setFillColor(sf::Color::White);
+  botao_musica_jogo.setOutlineThickness(2);
+  botao_musica_jogo.setOutlineColor(purple);
+  botao_musica_jogo.setOrigin({0.f, 0.f}); 
+  botao_musica_jogo.setPosition({50.f, OFFSET.y + 200.f});
+
+  label_musica_jogo.setString("Musica");
+  label_musica_jogo.setCharacterSize(30);
+  label_musica_jogo.setFillColor(purple);
+
+  sf::FloatRect lb_mj = label_musica_jogo.getLocalBounds();
+  label_musica_jogo.setOrigin({lb_mj.size.x / 2.0f, lb_mj.size.y / 2.0f});
+  label_musica_jogo.setPosition({200.f, OFFSET.y + 232.5f});
+
+  //botao voltar jogo
   botao_voltar_jogo.setSize({300.f, 65.f});
   botao_voltar_jogo.setFillColor(sf::Color::White);
   botao_voltar_jogo.setOutlineThickness(2);
   botao_voltar_jogo.setOutlineColor(purple);
-  botao_voltar_jogo.setOrigin({150.f, 32.5f});
-  botao_voltar_jogo.setPosition({windowSize.x / 2.f, 900.f});
+  botao_voltar_jogo.setOrigin({0.f, 0.f}); 
+  botao_voltar_jogo.setPosition({50.f, OFFSET.y + 650.f});
 
-  label_voltar_jogo.setString("Voltar");
-  label_voltar_jogo.setCharacterSize(35);
+  label_voltar_jogo.setString("Sair");
+  label_voltar_jogo.setCharacterSize(30);
   label_voltar_jogo.setFillColor(purple);
+
   sf::FloatRect lb_vj = label_voltar_jogo.getLocalBounds();
   label_voltar_jogo.setOrigin({lb_vj.size.x / 2.0f, lb_vj.size.y / 2.0f});
-  label_voltar_jogo.setPosition(botao_voltar_jogo.getPosition());
-
-  //botao erro
+  label_voltar_jogo.setPosition({200.f, OFFSET.y + 682.5f});
   
+  //botao erro
   float tamanho_sudoku = 9 * TAM_CELULA;
 
   OFFSET.x = (1920.f - tamanho_sudoku) / 2.f; 
   OFFSET.y = (1080.f - tamanho_sudoku) / 2.f;
 
-  label_erro.setString("Erros: Ilimitado");
-  label_erro.setCharacterSize(30);
+  label_erro.setCharacterSize(25);
   label_erro.setFillColor(sf::Color::Red);
-  sf::FloatRect lb_e = label_erro.getLocalBounds();
   label_erro.setOrigin({0.f, 0.f});
   label_erro.setPosition({50.f, OFFSET.y});
 } 
@@ -132,26 +165,60 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
         } else if (botao_voltar.getGlobalBounds().contains(mousePosF)) {
           tela_atual = Tela::Menu;
         } 
-      }
-
-      if (dificuldade_selecionada == Dificuldade::Facil) {
-        if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
-          // POR ENQUANTO DEPOIS COLOCAR NOS 3 AQUI, LOGICA PARA POP UP CONFIRMANDO SE QUER SAIR
-          tela_atual = Tela::Menu;
-          dificuldade_selecionada = Dificuldade::Nenhum;
-          jogo_iniciado = false;
+      } else if (jogo_iniciado) { 
+        if (dificuldade_selecionada == Dificuldade::Facil) {
+          if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
+            // POR ENQUANTO DEPOIS COLOCAR NOS 3 AQUI, LOGICA PARA POP UP CONFIRMANDO SE QUER SAIR
+            tela_atual = Tela::Menu;
+            dificuldade_selecionada = Dificuldade::Nenhum;
+            jogo_iniciado = false;
+          }
+        } else if (dificuldade_selecionada == Dificuldade::Medio) {
+          if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
+            tela_atual = Tela::Menu;
+            dificuldade_selecionada = Dificuldade::Nenhum;
+            jogo_iniciado = false;
+          } 
+        } else if (dificuldade_selecionada == Dificuldade::Dificil) {
+          if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
+            tela_atual = Tela::Menu;
+            dificuldade_selecionada = Dificuldade::Nenhum;
+            jogo_iniciado = false;
+          } 
         }
-      } else if (dificuldade_selecionada == Dificuldade::Medio) {
-        if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
-          tela_atual = Tela::Menu;
-          dificuldade_selecionada = Dificuldade::Nenhum;
-          jogo_iniciado = false;
-        } 
-      } else if (dificuldade_selecionada == Dificuldade::Dificil) {
-        if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
-          tela_atual = Tela::Menu;
-          dificuldade_selecionada = Dificuldade::Nenhum;
-          jogo_iniciado = false;
+        
+        if (botao_volume_jogo.getGlobalBounds().contains(mousePosF)) {
+          volume_idx = (volume_idx + 1) % 5;
+          musicaGlobal.setVolume(niveis_volume[volume_idx]);
+
+          if (niveis_volume[volume_idx] == 0) {
+            label_volume_jogo.setString("Mudo");
+          } else {
+            label_volume_jogo.setString(std::to_string((int)niveis_volume[volume_idx]) + "%");
+          }
+
+          sf::FloatRect lb_vvj = label_volume_jogo.getLocalBounds();
+          label_volume_jogo.setOrigin({lb_vvj.size.x / 2.0f, lb_vvj.size.y / 2.0f});
+        }
+
+        if (botao_musica_jogo.getGlobalBounds().contains(mousePosF)) {
+          musicaGlobal.stop();
+
+          musicaAtual = (musicaAtual + 1) % listaMusicas.size();
+
+          std::string caminho = "../assets/" + listaMusicas[musicaAtual];
+
+          if (musicaGlobal.openFromFile(caminho)) {
+            musicaGlobal.play();
+            
+            if (listaMusicas[musicaAtual] == "musica0.ogg") label_musica_jogo.setString("1");
+            else if (listaMusicas[musicaAtual] == "musica1.ogg") label_musica_jogo.setString("2");
+            else if (listaMusicas[musicaAtual] == "musica2.ogg") label_musica_jogo.setString("3");
+
+            sf::FloatRect bounds_m = label_musica_jogo.getLocalBounds();
+            label_musica_jogo.setOrigin({bounds_m.size.x / 2.f, bounds_m.size.y / 2.f});
+            label_musica_jogo.setPosition({200.f, OFFSET.y + 232.5f});
+          }
         }
       }
     }
@@ -243,9 +310,15 @@ void Jogo::desenhar(sf::RenderWindow& window) {
       label_erro.setString("Erros: " + std::to_string(count_erros) + "/3");      
     } 
 
-    window.draw(label_erro);
+
+    window.draw(botao_musica_jogo);
+    window.draw(botao_volume_jogo);
     window.draw(botao_voltar_jogo);
+
+    window.draw(label_erro);
+    window.draw(label_volume_jogo);
+    window.draw(label_musica_jogo);
     window.draw(label_voltar_jogo);
     window.display(); 
   }
-} 
+}  

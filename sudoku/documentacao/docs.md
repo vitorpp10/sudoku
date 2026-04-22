@@ -264,3 +264,13 @@ if (grade[i][j] != 0) {
 
     window.draw(textoNumero);
 ```
+
+
+Formula para calcular tamanho e area:
+```
+    Texto X = X_do_Botão + (Largura_do_Botão / 2)
+    Texto Y = Y_do_Botão + (Altura_do_Botão / 2)
+
+    50+(300/2)=200
+    (OFFSET.y+200)+(65/2)=OFFSET.y+232.5
+```
