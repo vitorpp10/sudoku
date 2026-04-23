@@ -15,7 +15,8 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
       label_voltar_jogo(font),
       label_erro(font),
       label_volume_jogo(font),
-      label_musica_jogo(font)
+      label_musica_jogo(font),
+      label_musica_trocar(font)
 {
 
   //configura o titulo
@@ -116,6 +117,10 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
   sf::FloatRect lb_mj = label_musica_jogo.getLocalBounds();
   label_musica_jogo.setOrigin({lb_mj.size.x / 2.0f, lb_mj.size.y / 2.0f});
   label_musica_jogo.setPosition({200.f, OFFSET.y + 232.5f});
+  
+  //botoes 1,2,3 trocar musica
+  label_musica_trocar.setCharacterSize(30);
+  label_musica_trocar.setFillColor(purple);
 
   //botao voltar jogo
   botao_voltar_jogo.setSize({300.f, 65.f});
@@ -203,6 +208,7 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
 
         if (botao_musica_jogo.getGlobalBounds().contains(mousePosF)) {
           musicaGlobal.stop();
+          label_musica_jogo.setString("");
 
           musicaAtual = (musicaAtual + 1) % listaMusicas.size();
 
@@ -211,13 +217,25 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
           if (musicaGlobal.openFromFile(caminho)) {
             musicaGlobal.play();
             
-            if (listaMusicas[musicaAtual] == "musica0.ogg") label_musica_jogo.setString("1");
-            else if (listaMusicas[musicaAtual] == "musica1.ogg") label_musica_jogo.setString("2");
-            else if (listaMusicas[musicaAtual] == "musica2.ogg") label_musica_jogo.setString("3");
-
-            sf::FloatRect bounds_m = label_musica_jogo.getLocalBounds();
-            label_musica_jogo.setOrigin({bounds_m.size.x / 2.f, bounds_m.size.y / 2.f});
-            label_musica_jogo.setPosition({200.f, OFFSET.y + 232.5f});
+            if (listaMusicas[musicaAtual] == "musica0.ogg") { 
+              label_musica_trocar.setString("1");
+              sf::FloatRect bounds_musica = label_musica_trocar.getLocalBounds();
+              label_musica_trocar.setOrigin({
+              bounds_musica.position.x + bounds_musica.size.x / 2.f, 
+              bounds_musica.position.y + bounds_musica.size.y / 2.f
+            });
+            label_musica_trocar.setPosition(botao_musica_jogo.getPosition());
+            } else if (listaMusicas[musicaAtual] == "musica1.ogg") {
+              label_musica_trocar.setString("2");
+              sf::FloatRect lb_m2 = label_musica_trocar.getLocalBounds();
+              label_musica_trocar.setOrigin({lb_m2.size.x / 2.0f, lb_m2.size.y / 2.0f});
+              label_musica_trocar.setPosition({200.f, OFFSET.y + 232.5f});
+            } else if (listaMusicas[musicaAtual] == "musica2.ogg") {
+              label_musica_trocar.setString("3");
+              sf::FloatRect lb_m3 = label_musica_trocar.getLocalBounds();
+              label_musica_trocar.setOrigin({lb_m3.size.x / 2.0f, lb_m3.size.y / 2.0f});
+              label_musica_trocar.setPosition({200.f, OFFSET.y + 232.5f});
+            }
           }
         }
       }
@@ -318,7 +336,9 @@ void Jogo::desenhar(sf::RenderWindow& window) {
     window.draw(label_erro);
     window.draw(label_volume_jogo);
     window.draw(label_musica_jogo);
+    window.draw(label_musica_trocar);
     window.draw(label_voltar_jogo);
     window.display(); 
   }
 }  
+
