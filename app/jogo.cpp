@@ -16,8 +16,7 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
       label_erro(font),
       label_volume_jogo(font),
       label_musica_jogo(font),
-      label_musica_trocar(font),
-      label_esconder(font)
+      label_musica_trocar(font)
 {
 
   //configura o titulo
@@ -125,24 +124,8 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
 
   label_musica_trocar.setOrigin({lb_mj.size.x / 2.0f, lb_mj.size.y / 2.0f});
   label_musica_trocar.setPosition({272.f, OFFSET.y + 232.5f});
-
-  //botao esconder botoes
-  botao_esconder.setSize({300.f, 65.f});
-  botao_esconder.setFillColor(sf::Color::White);
-  botao_esconder.setOutlineThickness(2);
-  botao_esconder.setOutlineColor(purple);
-  botao_esconder.setOrigin({0.f, 0.f});
-  botao_esconder.setPosition({50.f, OFFSET.y + 300.f});
-
-  label_esconder.setString("Esconder");
-  label_esconder.setCharacterSize(30);
-  label_esconder.setFillColor(purple);
-
-  sf::FloatRect lb_es = label_esconder.getLocalBounds();
-  label_esconder.setOrigin({lb_es.size.x / 2.0f, lb_es.size.y / 2.0f});
-  label_esconder.setPosition({200.f, OFFSET.y + 332.5f});
  
-  //botao voltar jogo
+   //botao voltar jogo
   botao_voltar_jogo.setSize({300.f, 65.f});
   botao_voltar_jogo.setFillColor(sf::Color::White);
   botao_voltar_jogo.setOutlineThickness(2);
@@ -189,7 +172,7 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
         } else if (botao_voltar.getGlobalBounds().contains(mousePosF)) {
           tela_atual = Tela::Menu;
         } 
-      } else if (jogo_iniciado && parar_funcionar == false) { 
+      } else if (jogo_iniciado) {
         if (dificuldade_selecionada == Dificuldade::Facil) {
           if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
             // POR ENQUANTO DEPOIS COLOCAR NOS 3 AQUI, LOGICA PARA POP UP CONFIRMANDO SE QUER SAIR
@@ -216,9 +199,9 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
           musicaGlobal.setVolume(niveis_volume[volume_idx]);
 
           if (niveis_volume[volume_idx] == 0) {
-            label_volume_jogo.setString("Mudo");
+            label_volume_jogo.setString("Mudo");  
           } else {
-            label_volume_jogo.setString(std::to_string((int)niveis_volume[volume_idx]) + "%");
+            label_volume_jogo.setString(std::to_string((int)niveis_volume[volume_idx]) + "%"); 
           }
 
           sf::FloatRect lb_vvj = label_volume_jogo.getLocalBounds();
@@ -244,11 +227,6 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
               label_musica_trocar.setString("3");
             }
           }
-        }
-
-        if (botao_esconder.getGlobalBounds().contains(mousePosF)) {
-          parar_funcionar = true;
-          escondeu = true;
         }
       }
     }
@@ -340,71 +318,14 @@ void Jogo::desenhar(sf::RenderWindow& window) {
       label_erro.setString("Erros: " + std::to_string(count_erros) + "/3");      
     } 
 
-    if (!escondeu) {
-      window.draw(botao_musica_jogo);
-      window.draw(botao_volume_jogo);
-      window.draw(botao_voltar_jogo);
-      window.draw(botao_esconder);
-      window.draw(label_erro);
-      window.draw(label_volume_jogo);
-      window.draw(label_musica_jogo);
-      window.draw(label_musica_trocar);
-      window.draw(label_voltar_jogo);
-      window.draw(label_esconder);
-    } else if (escondeu) {
-      window.clear(sf::Color::White);
-      
-      //redesenha quadrado aqui:
-      
-      //cores sudoku
-      sf::RectangleShape celula({TAM_CELULA, TAM_CELULA});
-      celula.setFillColor(sf::Color::Transparent);
-      celula.setOutlineColor(purple);
-      celula.setOutlineThickness(1.f); 
-
-      //desenho quadrado do sudoku
-      for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-          celula.setPosition({OFFSET.x + (j * TAM_CELULA), OFFSET.y + (i * TAM_CELULA)});
-          window.draw(celula);
-
-          if (grade[i][j] != 0) {
-          texto_numero.setString(std::to_string(grade[i][j]));
-
-          sf::FloatRect bounds = texto_numero.getLocalBounds();
-          texto_numero.setOrigin({
-              bounds.position.x + bounds.size.x / 2.f,
-              bounds.position.y + bounds.size.y / 2.f
-          });
-
-          texto_numero.setPosition({ 
-              OFFSET.x + (j * TAM_CELULA) + (TAM_CELULA / 2.f),
-              OFFSET.y + (i * TAM_CELULA) + (TAM_CELULA / 2.f)
-          });
-
-          window.draw(texto_numero);
-          } 
-        }
-      }
-      
-      //linhas verticas e horizontais desenho
-      for (int i = 0; i <= 9; i += 3) {
-      sf::RectangleShape linhaV(sf::Vector2f(4.f, TAM_CELULA * 9.f)); 
-      linhaV.setFillColor(purple);
-      linhaV.setPosition({OFFSET.x + (i * TAM_CELULA) - 2.f, OFFSET.y});
-      window.draw(linhaV);
-
-      sf::RectangleShape linhaH(sf::Vector2f(TAM_CELULA * 9.f, 4.f));
-      linhaH.setFillColor(purple);
-      linhaH.setPosition({OFFSET.x, OFFSET.y + (i * TAM_CELULA) - 2.f});
-      window.draw(linhaH);
-      }
-
-      window.draw(label_erro);
-      
-      window.display(); 
-    }
+    window.draw(botao_musica_jogo);
+    window.draw(botao_volume_jogo);
+    window.draw(botao_voltar_jogo);
+    window.draw(label_erro);
+    window.draw(label_volume_jogo);
+    window.draw(label_musica_jogo);
+    window.draw(label_musica_trocar);
+    window.draw(label_voltar_jogo);
+    window.display(); 
   }
 }  
-
-

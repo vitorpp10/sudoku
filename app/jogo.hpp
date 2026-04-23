@@ -14,15 +14,16 @@ class Jogo {
     int volume_idx = 4;
     float niveis_volume[5] = {0.f, 25.f, 50.f, 75.f, 100.f};
     bool jogo_iniciado = false; 
-    bool escondeu = false;
-    bool parar_funcionar = false;
     Dificuldade dificuldade_selecionada = Dificuldade::Nenhum;
     int count_erros = 0;
     sf::Font font;
     sf::Text titulo;
     sf::Text texto_numero;
-    sf::Text label_facil, label_medio, label_dificil, label_voltar, label_erro, label_voltar_jogo, label_volume_jogo, label_musica_jogo, label_musica_trocar, label_esconder;
-    sf::RectangleShape botao_facil, botao_medio, botao_dificil, botao_voltar, botao_voltar_jogo, botao_volume_jogo, botao_musica_jogo, botao_esconder;
+    
+    sf::Text label_facil, label_medio, label_dificil, label_voltar, label_erro, label_voltar_jogo, label_volume_jogo, label_musica_jogo, label_musica_trocar;
+    
+    sf::RectangleShape botao_facil, botao_medio, botao_dificil, botao_voltar, botao_voltar_jogo, botao_volume_jogo, botao_musica_jogo;
+    
     sf::Clock clock;
     //medidas tabuleiro 
     const float TAM_CELULA = 80.f;

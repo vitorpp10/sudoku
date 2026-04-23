@@ -165,7 +165,7 @@ void Opcoes::desenhar(sf::RenderWindow& window) {
   window.draw(titulo);
   window.draw(botao_volume);
   window.draw(label_volume);
-  window.draw(botao_voltar);
+  window.draw(botao_voltar);  
   window.draw(label_voltar);
   window.draw(botao_musica);
   window.draw(label_musica);
