@@ -10,9 +10,9 @@ class Jogo {
       "musica1.ogg",
       "musica2.ogg"
     };
+    int musicaAtual = 0;
     bool popup = false;
     bool desativar_tudo = false;
-    int musicaAtual = 0;
     int volume_idx = 4;
     float niveis_volume[5] = {0.f, 25.f, 50.f, 75.f, 100.f};
     bool jogo_iniciado = false; 

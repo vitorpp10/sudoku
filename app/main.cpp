@@ -5,8 +5,9 @@
 #include"jogo.hpp" 
 #include"opcoes.hpp"
 
-sf::Music musicaGlobal;
+sf::Music musicaGlobal, musicaJogo;
 int musicaAtual = 0;
+int musicaAtualJogo = 0;
 
 int main() {
     // cria a janela

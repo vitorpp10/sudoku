@@ -225,35 +225,52 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
         if (botao_facil.getGlobalBounds().contains(mousePosF)) {
           dificuldade_selecionada = Dificuldade::Facil;
           jogo_iniciado = true;     
+          musicaGlobal.stop();
+          musicaJogo.play();
         } else if (botao_medio.getGlobalBounds().contains(mousePosF)) {
           dificuldade_selecionada = Dificuldade::Medio;
           jogo_iniciado = true;
+          musicaGlobal.stop();
+          musicaJogo.play();
         } else if (botao_dificil.getGlobalBounds().contains(mousePosF)) {
           dificuldade_selecionada = Dificuldade::Dificil;
           jogo_iniciado = true;
+          musicaGlobal.stop();
+          musicaJogo.play();
         } else if (botao_voltar.getGlobalBounds().contains(mousePosF)) {
           tela_atual = Tela::Menu;
         } 
       } else if (jogo_iniciado) {
-          
         if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
             popup = true;
-            desativar_tudo = true;
+            desativar_tudo = true; 
         }
-
+        
         if (botao_pop_up.getGlobalBounds().contains(mousePosF)) {
           if (botao_sim_pop_up.getGlobalBounds().contains(mousePosF)) {
+            //resetar musica assim que sair da tela jogo
+            musicaJogo.stop();
+            musicaAtualJogo = 0;
+            musicaGlobal.play();
+
+            //resetar volume assim que sair da tela jogo 
+            musicaGlobal.setVolume(niveis_volume[4]);
+            musicaJogo.setVolume(niveis_volume[4]);
+
             tela_atual = Tela::Menu;
             dificuldade_selecionada = Dificuldade::Nenhum;
             jogo_iniciado = false;
+            popup = false;
+            desativar_tudo = false;
           } else if (botao_nao_pop_up.getGlobalBounds().contains(mousePosF)) {
-            // colocar algo aqui
+            desativar_tudo = false;
+            popup = false;
           }
         }
 
         if (botao_volume_jogo.getGlobalBounds().contains(mousePosF) && desativar_tudo == false) {
           volume_idx = (volume_idx + 1) % 5;
-          musicaGlobal.setVolume(niveis_volume[volume_idx]);
+          musicaJogo.setVolume(niveis_volume[volume_idx]);
 
           if (niveis_volume[volume_idx] == 0) {
             label_volume_jogo.setString("Mudo");  
@@ -266,21 +283,21 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
         }
 
         if (botao_musica_jogo.getGlobalBounds().contains(mousePosF) && desativar_tudo == false) {
-          musicaGlobal.stop();
+          musicaJogo.stop();
           label_musica_jogo.setString("");
 
-          musicaAtual = (musicaAtual + 1) % listaMusicas.size();
+          musicaAtualJogo = (musicaAtualJogo + 1) % listaMusicas.size();
+          
+          std::string caminho = "../assets/" + listaMusicas[musicaAtualJogo];
 
-          std::string caminho = "../assets/" + listaMusicas[musicaAtual];
-
-          if (musicaGlobal.openFromFile(caminho)) {
-            musicaGlobal.play();
+          if (musicaJogo.openFromFile(caminho)) {
+            musicaJogo.play();
             
-            if (listaMusicas[musicaAtual] == "musica0.ogg") { 
+            if (listaMusicas[musicaAtualJogo] == "musica0.ogg") { 
               label_musica_trocar.setString("1");
-            } else if (listaMusicas[musicaAtual] == "musica1.ogg") {
+            } else if (listaMusicas[musicaAtualJogo] == "musica1.ogg") {
               label_musica_trocar.setString("2");
-            } else if (listaMusicas[musicaAtual] == "musica2.ogg") {
+            } else if (listaMusicas[musicaAtualJogo] == "musica2.ogg") {
               label_musica_trocar.setString("3");
             } 
           }
@@ -395,7 +412,8 @@ void Jogo::desenhar(sf::RenderWindow& window) {
       window.draw(label_sim_pop_up);
       window.draw(botao_nao_pop_up);
       window.draw(label_nao_pop_up);
-    }
+    } 
+
   }
   window.display(); 
 }  

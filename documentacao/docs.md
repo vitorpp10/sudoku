@@ -274,3 +274,8 @@ Formula para calcular tamanho e area:
     50+(300/2)=200
     (OFFSET.y+200)+(65/2)=OFFSET.y+232.5
 ```
+
+Para pegar status da musica que esta tocando
+```
+nome_variavel.getStatus() == sf::Music::Status::Playing
+```
