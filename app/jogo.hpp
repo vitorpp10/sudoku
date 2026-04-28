@@ -48,5 +48,6 @@ class Jogo {
 
     void tratarEventos(const sf::Event& event, const sf::RenderWindow& window, Tela& tela_atual);
     void atualizar();
+    void atualizarHoverJogo(const sf::RenderWindow& window, Tela& tela_atual);
     void desenhar(sf::RenderWindow& window);
 };

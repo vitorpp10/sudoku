@@ -1,4 +1,5 @@
 #include"jogo.hpp"
+#include <SFML/Window/Mouse.hpp>
 #include<cmath>
 #include<string>
 
@@ -301,6 +302,84 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
           }
         }
       }
+    }
+  }
+}
+
+void Jogo::atualizarHoverJogo(const sf::RenderWindow& window, Tela& tela_atual) {
+  sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+  if (tela_atual == Tela::Jogo) {
+    if (botao_facil.getGlobalBounds().contains(mousePos)) {
+      botao_facil.setFillColor(purple);
+      label_facil.setFillColor(sf::Color::White);
+    } else {
+      botao_facil.setFillColor(sf::Color::White);
+      label_facil.setFillColor(purple);
+    }
+
+    if (botao_medio.getGlobalBounds().contains(mousePos)) {
+      botao_medio.setFillColor(purple);
+      label_medio.setFillColor(sf::Color::White);
+    } else {
+      botao_medio.setFillColor(sf::Color::White);
+      label_medio.setFillColor(purple);
+    }
+  
+    if (botao_dificil.getGlobalBounds().contains(mousePos)) {
+      botao_dificil.setFillColor(purple);
+      label_dificil.setFillColor(sf::Color::White);
+    } else {
+      botao_dificil.setFillColor(sf::Color::White);
+      label_dificil.setFillColor(purple);
+    }
+
+    if (botao_voltar.getGlobalBounds().contains(mousePos)) {
+      botao_voltar.setFillColor(purple);
+      label_voltar.setFillColor(sf::Color::White);
+    } else {
+      botao_voltar.setFillColor(sf::Color::White);
+      label_voltar.setFillColor(purple);
+    }
+
+    if (botao_voltar_jogo.getGlobalBounds().contains(mousePos)) {
+      botao_voltar_jogo.setFillColor(purple);
+      label_voltar_jogo.setFillColor(sf::Color::White);
+    } else {
+      botao_voltar_jogo.setFillColor(sf::Color::White);
+      label_voltar_jogo.setFillColor(purple);
+    } 
+    
+    if (botao_musica_jogo.getGlobalBounds().contains(mousePos)) {
+      botao_musica_jogo.setFillColor(purple);
+      label_musica_jogo.setFillColor(sf::Color::White);
+    } else {
+      botao_musica_jogo.setFillColor(sf::Color::White);
+      label_musica_jogo.setFillColor(purple);
+    } 
+    
+    if (botao_volume_jogo.getGlobalBounds().contains(mousePos)) {
+      botao_volume_jogo.setFillColor(purple);
+      label_volume_jogo.setFillColor(sf::Color::White);
+    } else {
+      botao_volume_jogo.setFillColor(sf::Color::White);
+      label_volume_jogo.setFillColor(purple);
+    }
+
+    if (botao_sim_pop_up.getGlobalBounds().contains(mousePos)) {
+      botao_sim_pop_up.setFillColor(purple);
+      label_sim_pop_up.setFillColor(sf::Color::White);
+    } else {
+      botao_sim_pop_up.setFillColor(sf::Color::White);
+      label_sim_pop_up.setFillColor(purple);
+    } 
+    
+    if (botao_nao_pop_up.getGlobalBounds().contains(mousePos)) {
+      botao_nao_pop_up.setFillColor(purple);
+      label_nao_pop_up.setFillColor(sf::Color::White);
+    } else {
+      botao_nao_pop_up.setFillColor(sf::Color::White);
+      label_nao_pop_up.setFillColor(purple);
     }
   }
 }

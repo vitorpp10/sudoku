@@ -19,10 +19,12 @@ class Opcoes {
     sf::Text label_volume, label_voltar, label_musica;
     sf::RectangleShape botao_volume, botao_voltar, botao_musica;
     sf::Clock clock;
+    sf::Color purple = sf::Color(128, 0, 128);
   public:
     Opcoes(const sf::Vector2u& windowSize);
 
     void tratarEventos(const sf::Event& event, const sf::RenderWindow& window, Tela& tela_atual);
     void atualizar();
+    void atualizarHoverOpcao(const sf::RenderWindow& window, Tela& tela_atual);
     void desenhar(sf::RenderWindow& window);
 };

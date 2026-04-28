@@ -1,6 +1,6 @@
 #include"menu.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
 #include<cmath>
-#include<iostream>
 #include"def.hpp"
 #include<cstdlib>
 
@@ -68,8 +68,30 @@ void Menu::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
             if (botao_jogar.getGlobalBounds().contains(mousePosF)) { 
                 tela_atual = Tela::Jogo; 
             } else if (botao_opcoes.getGlobalBounds().contains(mousePosF)) {
-              tela_atual = Tela::Opcoes;
+                tela_atual = Tela::Opcoes;
             }
+        }
+    }
+}
+
+void Menu::atualizarHoverMenu(const sf::RenderWindow& window, Tela& tela_atual) {
+    sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+    if (tela_atual == Tela::Menu) {
+        if (botao_jogar.getGlobalBounds().contains(mousePos)) {
+            botao_jogar.setFillColor(purple);
+            label_jogar.setFillColor(sf::Color::White);
+        } else {
+            botao_jogar.setFillColor(sf::Color::White);
+            label_jogar.setFillColor(purple);
+        } 
+        
+        if (botao_opcoes.getGlobalBounds().contains(mousePos)) {
+            botao_opcoes.setFillColor(purple);
+            label_opcoes.setFillColor(sf::Color::White);
+        } else {
+            botao_opcoes.setFillColor(sf::Color::White);
+            label_opcoes.setFillColor(purple);
         }
     }
 }

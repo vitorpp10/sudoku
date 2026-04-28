@@ -1,6 +1,6 @@
-#include<iostream>
 #include"opcoes.hpp"
 #include"def.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
 #include<cmath>
 #include<cstdlib>
 #include<string>
@@ -150,6 +150,47 @@ void Opcoes::tratarEventos(const sf::Event& event, const sf::RenderWindow& windo
     }
   }
 }
+
+
+void Opcoes::atualizarHoverOpcao(const sf::RenderWindow& window, Tela& tela_atual) {
+  sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+  if (tela_atual == Tela::Opcoes) {
+    if (botao_musica.getGlobalBounds().contains(mousePos)) {
+      botao_musica.setFillColor(purple);
+      label_musica.setFillColor(sf::Color::White);
+    } else {
+      botao_musica.setFillColor(sf::Color::White);
+      label_musica.setFillColor(purple);
+    }
+  }
+
+  if (tela_atual == Tela::Opcoes) {
+    if (botao_musica.getGlobalBounds().contains(mousePos)) {
+      botao_musica.setFillColor(purple);
+      label_musica.setFillColor(sf::Color::White);
+    } else {
+      botao_musica.setFillColor(sf::Color::White);
+      label_musica.setFillColor(purple);
+    }
+
+    if (botao_volume.getGlobalBounds().contains(mousePos)) {
+      botao_volume.setFillColor(purple);
+      label_volume.setFillColor(sf::Color::White);
+    } else {
+      botao_volume.setFillColor(sf::Color::White);
+      label_volume.setFillColor(purple);
+    } 
+    
+    if (botao_voltar.getGlobalBounds().contains(mousePos)) {
+      botao_voltar.setFillColor(purple);
+      label_voltar.setFillColor(sf::Color::White);
+    } else {
+      botao_voltar.setFillColor(sf::Color::White);
+      label_voltar.setFillColor(purple);
+    }
+  }
+} 
 
 //animacoes
 void Opcoes::atualizar() {

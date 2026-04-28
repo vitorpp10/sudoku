@@ -46,13 +46,16 @@ int main() {
         // atualização e Desenho dependendo da tela
         if (tela_atual == Tela::Menu) {
             menuPrincipal.atualizar();
+            menuPrincipal.atualizarHoverMenu(window, tela_atual);
             menuPrincipal.desenhar(window);
         } 
         else if (tela_atual == Tela::Jogo) {
           jogo.atualizar();
+          jogo.atualizarHoverJogo(window, tela_atual);
           jogo.desenhar(window);
         } else if (tela_atual == Tela::Opcoes) {
           opcao.atualizar();
+          opcao.atualizarHoverOpcao(window, tela_atual);
           opcao.desenhar(window);
         }
         window.display();
