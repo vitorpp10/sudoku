@@ -1,7 +1,5 @@
-#include<iostream>
 #include"jogo.hpp"
 #include<cmath>
-#include<cstdlib>
 #include<string>
 
 Jogo::Jogo(const sf::Vector2u& windowSize) 

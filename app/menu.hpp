@@ -1,7 +1,6 @@
 #pragma once //para o compilador nao executar duas vezes
 #include<SFML/Graphics.hpp> 
 #include"def.hpp"
-#include<optional> // encapsular coisas de outros arquivos 
 
 class Menu {
   private:

@@ -1,7 +1,6 @@
 #pragma once
 #include<SFML/Graphics.hpp>
 #include"def.hpp"
-#include<optional>
 
 class Jogo {
   private:
