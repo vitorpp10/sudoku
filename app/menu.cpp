@@ -6,9 +6,9 @@
 
 Menu::Menu(const sf::Vector2u& windowSize) 
     : font("../assets/PressStart2P-Regular.ttf"), 
-      titulo(font), 
-      label_jogar(font), 
-      label_opcoes(font)
+    titulo(font), 
+    label_jogar(font), 
+    label_opcoes(font)
 {
     // configura o título
     titulo.setString("Sudoku da Fernanda");
@@ -66,7 +66,7 @@ void Menu::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
         if (event.getIf<sf::Event::MouseButtonPressed>()->button == sf::Mouse::Button::Left) {
             // se clicou no botão, altera a tela que foi passada por referência
             if (botao_jogar.getGlobalBounds().contains(mousePosF)) { 
-                tela_atual = Tela::Jogo; 
+                tela_atual = Tela::Modo;
             } else if (botao_opcoes.getGlobalBounds().contains(mousePosF)) {
                 tela_atual = Tela::Opcoes;
             }

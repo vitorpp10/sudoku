@@ -1,9 +1,11 @@
 #include<SFML/Graphics.hpp>
 #include<SFML/Audio.hpp>
 #include<cstdlib>
+#include"modo.hpp"
 #include"menu.hpp" // incluimos menu hpp aqui
 #include"jogo.hpp" 
 #include"opcoes.hpp"
+#include"carregando.hpp"
 #include"estatisticas.hpp"
 
 sf::Music musicaGlobal, musicaJogo;
@@ -22,6 +24,8 @@ int main() {
     Jogo jogo(window.getSize());
     Opcoes opcao(window.getSize());
     Estatisticas estatisticas(window.getSize());
+    Carregando carregando(window.getSize());
+    Modo modo(window.getSize());
 
     // loop infinito da janela
     while (window.isOpen()) {
@@ -41,6 +45,10 @@ int main() {
               opcao.tratarEventos(*event, window, tela_atual);
             } else if (tela_atual == Tela::Estatisticas) {
               estatisticas.tratarEventos(*event, window, tela_atual);
+            } else if (tela_atual == Tela::Carregando) {
+              carregando.tratarEventos(*event, window, tela_atual);
+            } else if (tela_atual == Tela::Modo) {
+              modo.tratarEventos(*event, window, tela_atual);
             }
         } 
 
@@ -65,6 +73,14 @@ int main() {
           estatisticas.atualizar();
           estatisticas.atualizarHoverEstatisticas(window, tela_atual);
           estatisticas.desenhar(window);
+        } else if (tela_atual == Tela::Carregando) {
+          carregando.atualizar(tela_atual);
+          carregando.atualizarHoverCarregando(window, tela_atual);
+          carregando.desenhar(window);
+        } else if (tela_atual == Tela::Modo) {
+          modo.atualizar();
+          modo.atualizarHoverModo(window, tela_atual);
+          modo.desenhar(window);
         }
         window.display();
     }  

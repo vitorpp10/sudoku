@@ -12,18 +12,18 @@ class Jogo {
     int musicaAtual = 0;
     bool popup = false;
     bool desativar_tudo = false;
+    bool desativar_pop_up = true;
     int volume_idx = 4;
     float niveis_volume[5] = {0.f, 25.f, 50.f, 75.f, 100.f};
-    bool jogo_iniciado = false; 
     Dificuldade dificuldade_selecionada = Dificuldade::Nenhum;
     int count_erros = 0;
     sf::Font font;
     sf::Text titulo;
     sf::Text texto_numero;    
     
-    sf::Text label_facil, label_medio, label_dificil, label_voltar, label_erro, label_voltar_jogo, label_volume_jogo, label_musica_jogo, label_musica_trocar, label_pop_up, label_sim_pop_up, label_nao_pop_up, label_pop_detalhe;
+    sf::Text label_erro, label_voltar_jogo, label_volume_jogo, label_musica_jogo, label_musica_trocar, label_pop_up, label_sim_pop_up, label_nao_pop_up, label_pop_detalhe;
 
-    sf::RectangleShape botao_facil, botao_medio, botao_dificil, botao_voltar, botao_voltar_jogo, botao_volume_jogo, botao_musica_jogo, botao_pop_up, botao_sim_pop_up, botao_nao_pop_up, botao_fundo_escuro;
+    sf::RectangleShape botao_voltar_jogo, botao_volume_jogo, botao_musica_jogo, botao_pop_up, botao_sim_pop_up, botao_nao_pop_up, botao_fundo_escuro;
     
     sf::Clock clock;
     //medidas tabuleiro 

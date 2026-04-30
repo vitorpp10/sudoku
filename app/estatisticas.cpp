@@ -25,14 +25,7 @@ Estatisticas::Estatisticas(const sf::Vector2u& windowSize)
     botao_caixa.setOutlineColor(purple);
     botao_caixa.setOrigin({275.f, 250.f}); 
     botao_caixa.setPosition({windowSize.x / 2.0f, 470.f});
-
-    /* label_caixa.setString("Estatisticas Gerais");
-    label_caixa.setCharacterSize(36);   
-    label_caixa.setFillColor(purple);
-    sf::FloatRect lb_c = label_caixa.getLocalBounds();
-    label_caixa.setOrigin({lb_c.position.x + lb_c.size.x / 2.f, lb_c.position.y + lb_c.size.y / 2.f});
-    label_caixa.setPosition({windowSize.x / 2.0f, 230.f}); */
-
+    
     //botao perfil
     botao_perfil.setSize({450.f, 80.f});
     botao_perfil.setFillColor(sf::Color::White);
