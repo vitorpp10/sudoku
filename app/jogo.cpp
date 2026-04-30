@@ -353,9 +353,11 @@ void Jogo::atualizarHoverJogo(const sf::RenderWindow& window, Tela& tela_atual) 
     if (botao_musica_jogo.getGlobalBounds().contains(mousePos)) {
       botao_musica_jogo.setFillColor(purple);
       label_musica_jogo.setFillColor(sf::Color::White);
+      label_musica_trocar.setFillColor(sf::Color::White);
     } else {
       botao_musica_jogo.setFillColor(sf::Color::White);
       label_musica_jogo.setFillColor(purple);
+      label_musica_trocar.setFillColor(purple);
     } 
     
     if (botao_volume_jogo.getGlobalBounds().contains(mousePos)) {

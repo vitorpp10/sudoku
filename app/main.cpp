@@ -4,6 +4,7 @@
 #include"menu.hpp" // incluimos menu hpp aqui
 #include"jogo.hpp" 
 #include"opcoes.hpp"
+#include"estatisticas.hpp"
 
 sf::Music musicaGlobal, musicaJogo;
 int musicaAtual = 0;
@@ -20,6 +21,7 @@ int main() {
     Menu menuPrincipal(window.getSize());
     Jogo jogo(window.getSize());
     Opcoes opcao(window.getSize());
+    Estatisticas estatisticas(window.getSize());
 
     // loop infinito da janela
     while (window.isOpen()) {
@@ -37,6 +39,8 @@ int main() {
               jogo.tratarEventos(*event, window, tela_atual);
             } else if (tela_atual == Tela::Opcoes) {
               opcao.tratarEventos(*event, window, tela_atual);
+            } else if (tela_atual == Tela::Estatisticas) {
+              estatisticas.tratarEventos(*event, window, tela_atual);
             }
         } 
 
@@ -57,6 +61,10 @@ int main() {
           opcao.atualizar();
           opcao.atualizarHoverOpcao(window, tela_atual);
           opcao.desenhar(window);
+        } else if (tela_atual == Tela::Estatisticas) {
+          estatisticas.atualizar();
+          estatisticas.atualizarHoverEstatisticas(window, tela_atual);
+          estatisticas.desenhar(window);
         }
         window.display();
     }  

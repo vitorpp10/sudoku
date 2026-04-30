@@ -16,8 +16,8 @@ class Opcoes {
     float niveis_volume[5] = {0.f, 25.f, 50.f, 75.f, 100.f};
     sf::Font font;
     sf::Text titulo;
-    sf::Text label_volume, label_voltar, label_musica;
-    sf::RectangleShape botao_volume, botao_voltar, botao_musica;
+    sf::Text label_volume, label_voltar, label_musica, label_estatisticas;
+    sf::RectangleShape botao_volume, botao_voltar, botao_musica, botao_estatisticas;
     sf::Clock clock;
     sf::Color purple = sf::Color(128, 0, 128);
   public:

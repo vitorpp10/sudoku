@@ -10,7 +10,8 @@ Opcoes::Opcoes(const sf::Vector2u& windowSize)
       titulo(font), 
       label_volume(font),
       label_voltar(font),
-      label_musica(font)
+      label_musica(font),
+      label_estatisticas(font)
 {
 
   //configura o titulo
@@ -69,6 +70,26 @@ Opcoes::Opcoes(const sf::Vector2u& windowSize)
                         boundsMus.position.y + boundsMus.size.y / 2.f});
   label_musica.setPosition(botao_musica.getPosition());
 
+  //botao estatistica
+  botao_estatisticas.setSize({450.f, 80.f});
+  botao_estatisticas.setFillColor(sf::Color::White);
+  botao_estatisticas.setOutlineThickness(2);
+  botao_estatisticas.setOutlineColor(purple);
+  botao_estatisticas.setOrigin({225.f, 40.f});
+  botao_estatisticas.setPosition({windowSize.x / 2.0f, 500.f});
+
+  label_estatisticas.setString("Estatisticas");
+  label_estatisticas.setCharacterSize(35);
+  label_estatisticas.setFillColor(purple);
+  sf::FloatRect lb_es = label_estatisticas.getLocalBounds();
+  label_estatisticas.setOrigin({lb_es.size.x / 2.0f, lb_es.size.y / 2.0f});
+  label_estatisticas.setPosition(botao_estatisticas.getPosition());
+
+  sf::FloatRect boundsEs = label_estatisticas.getLocalBounds();
+  label_estatisticas.setOrigin({boundsEs.position.x + boundsEs.size.x / 2.f, 
+                        boundsEs.position.y + boundsEs.size.y / 2.f});
+  label_estatisticas.setPosition(botao_estatisticas.getPosition());
+  
   //botao voltar 
   botao_voltar.setSize({300.f, 65.f});
   botao_voltar.setFillColor(sf::Color::White);
@@ -146,7 +167,9 @@ void Opcoes::tratarEventos(const sf::Event& event, const sf::RenderWindow& windo
             });
           }
         }
-      } 
+      } else if (botao_estatisticas.getGlobalBounds().contains(mousePosF)) {
+        tela_atual = Tela::Estatisticas;
+      }
     }
   }
 }
@@ -189,6 +212,14 @@ void Opcoes::atualizarHoverOpcao(const sf::RenderWindow& window, Tela& tela_atua
       botao_voltar.setFillColor(sf::Color::White);
       label_voltar.setFillColor(purple);
     }
+
+    if (botao_estatisticas.getGlobalBounds().contains(mousePos)) {
+      botao_estatisticas.setFillColor(purple);
+      label_estatisticas.setFillColor(sf::Color::White);
+    } else {
+      botao_estatisticas.setFillColor(sf::Color::White);
+      label_estatisticas.setFillColor(purple);
+    }
   }
 } 
 
@@ -210,4 +241,8 @@ void Opcoes::desenhar(sf::RenderWindow& window) {
   window.draw(label_voltar);
   window.draw(botao_musica);
   window.draw(label_musica);
+  window.draw(botao_voltar);
+  window.draw(label_voltar);
+  window.draw(botao_estatisticas);
+  window.draw(label_estatisticas);
 }
