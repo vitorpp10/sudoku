@@ -57,6 +57,7 @@ void Carregando::tratarEventos(const sf::Event& event, const sf::RenderWindow& w
 
         if (event.getIf<sf::Event::MouseButtonPressed>()->button == sf::Mouse::Button::Left) {
             if (botao_cancelar.getGlobalBounds().contains(mousePosF)) {
+                ativarClique();
                 tela_atual = Tela::Menu;
             }           
         }   

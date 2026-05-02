@@ -66,8 +66,10 @@ void Menu::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
         if (event.getIf<sf::Event::MouseButtonPressed>()->button == sf::Mouse::Button::Left) {
             // se clicou no botão, altera a tela que foi passada por referência
             if (botao_jogar.getGlobalBounds().contains(mousePosF)) { 
+                ativarClique();
                 tela_atual = Tela::Modo;
             } else if (botao_opcoes.getGlobalBounds().contains(mousePosF)) {
+                ativarClique();
                 tela_atual = Tela::Opcoes;
             }
         }

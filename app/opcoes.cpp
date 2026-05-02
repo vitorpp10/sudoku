@@ -119,6 +119,7 @@ void Opcoes::tratarEventos(const sf::Event& event, const sf::RenderWindow& windo
 
     if (event.getIf<sf::Event::MouseButtonPressed>()->button == sf::Mouse::Button::Left) {
       if (botao_volume.getGlobalBounds().contains(mousePosF)) {
+        ativarClique();
         volume_idx = (volume_idx + 1) % 5;
 
         musicaGlobal.setVolume(niveis_volume[volume_idx]);
@@ -132,8 +133,10 @@ void Opcoes::tratarEventos(const sf::Event& event, const sf::RenderWindow& windo
         sf::FloatRect lb = label_volume.getLocalBounds();
         label_volume.setOrigin({lb.size.x / 2.0f, lb.size.y / 2.0f});
       } else if (botao_voltar.getGlobalBounds().contains(mousePosF)) {
+        ativarClique();
         tela_atual = Tela::Menu;
       } else if (botao_musica.getGlobalBounds().contains(mousePosF)) {
+        ativarClique();
         musicaGlobal.stop();
 
         musicaAtual = (musicaAtual + 1) % listaMusicas.size();
@@ -168,6 +171,7 @@ void Opcoes::tratarEventos(const sf::Event& event, const sf::RenderWindow& windo
           }
         }
       } else if (botao_estatisticas.getGlobalBounds().contains(mousePosF)) {
+        ativarClique();
         tela_atual = Tela::Estatisticas;
       }
     }

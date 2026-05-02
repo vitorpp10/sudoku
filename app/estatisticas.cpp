@@ -109,6 +109,7 @@ void Estatisticas::tratarEventos(const sf::Event& event, const sf::RenderWindow&
 
         if (event.getIf<sf::Event::MouseButtonPressed>()->button == sf::Mouse::Button::Left) {
             if (botao_voltar.getGlobalBounds().contains(mousePosF)) {
+                ativarClique();
                 tela_atual = Tela::Opcoes;
             }           
         }   

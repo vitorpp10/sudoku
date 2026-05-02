@@ -158,6 +158,7 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
     if (event.getIf<sf::Event::MouseButtonPressed>()->button == sf::Mouse::Button::Left) {
       if (tela_atual == Tela::Jogo) {
         if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
+            ativarClique();
             popup = true;
             desativar_tudo = true; 
             desativar_pop_up = false;
@@ -166,6 +167,7 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
         if (desativar_pop_up == false) {
           if (botao_pop_up.getGlobalBounds().contains(mousePosF)) {
             if (botao_sim_pop_up.getGlobalBounds().contains(mousePosF)) {
+              ativarClique();
               //resetar musica assim que sair da tela jogo
               musicaJogo.stop();
               musicaAtualJogo = 0;
@@ -180,6 +182,7 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
               desativar_tudo = false;
               desativar_pop_up = true;
             } else if (botao_nao_pop_up.getGlobalBounds().contains(mousePosF)) {
+              ativarClique();
               desativar_tudo = false;
               popup = false;
               desativar_pop_up = true;
@@ -188,6 +191,7 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
         }
 
         if (botao_volume_jogo.getGlobalBounds().contains(mousePosF) && desativar_tudo == false) {
+          ativarClique();
           volume_idx = (volume_idx + 1) % 5;
           musicaJogo.setVolume(niveis_volume[volume_idx]);
 
@@ -202,6 +206,7 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
         }
 
         if (botao_musica_jogo.getGlobalBounds().contains(mousePosF) && desativar_tudo == false) {
+          ativarClique();
           musicaJogo.stop();
           label_musica_jogo.setString("");
 

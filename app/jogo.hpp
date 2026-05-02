@@ -15,7 +15,6 @@ class Jogo {
     bool desativar_pop_up = true;
     int volume_idx = 4;
     float niveis_volume[5] = {0.f, 25.f, 50.f, 75.f, 100.f};
-    Dificuldade dificuldade_selecionada = Dificuldade::Nenhum;
     int count_erros = 0;
     sf::Font font;
     sf::Text titulo;

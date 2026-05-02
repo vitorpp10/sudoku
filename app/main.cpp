@@ -1,6 +1,7 @@
 #include<SFML/Graphics.hpp>
 #include<SFML/Audio.hpp>
 #include<cstdlib>
+#include<string>
 #include"modo.hpp"
 #include"menu.hpp" // incluimos menu hpp aqui
 #include"jogo.hpp" 
@@ -8,9 +9,19 @@
 #include"carregando.hpp"
 #include"estatisticas.hpp"
 
-sf::Music musicaGlobal, musicaJogo;
+Dificuldade dificuldade_selecionada = Dificuldade::Nenhum;
+
+sf::Music musicaGlobal, musicaJogo, toqueGlobal;
+std::string caminhoToque = "../assets/clique.ogg"; //caminho da musica aqui
 int musicaAtual = 0;
 int musicaAtualJogo = 0;
+
+void ativarClique() {
+  if (toqueGlobal.openFromFile(caminhoToque)) {
+    toqueGlobal.setVolume(100.f);
+    toqueGlobal.play();
+  }
+}
 
 int main() {
     // cria a janela

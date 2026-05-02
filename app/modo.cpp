@@ -84,15 +84,19 @@ void Modo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
 
         if (event.getIf<sf::Event::MouseButtonPressed>()->button == sf::Mouse::Button::Left) {
             if (botao_facil.getGlobalBounds().contains(mousePosF)) {
+                ativarClique();
                 dificuldade_selecionada = Dificuldade::Facil;
                 tela_atual = Tela::Carregando;
             } else if (botao_medio.getGlobalBounds().contains(mousePosF)) {
-                    dificuldade_selecionada = Dificuldade::Medio; 
-                    tela_atual = Tela::Carregando;     
+                ativarClique();
+                dificuldade_selecionada = Dificuldade::Medio; 
+                tela_atual = Tela::Carregando;     
             } else if (botao_dificil.getGlobalBounds().contains(mousePosF)) {
+                ativarClique();
                 dificuldade_selecionada = Dificuldade::Dificil;
                 tela_atual = Tela::Carregando;
             } else if (botao_voltar.getGlobalBounds().contains(mousePosF)) {
+                ativarClique();
                 tela_atual = Tela::Menu;
             }
         }

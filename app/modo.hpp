@@ -10,7 +10,6 @@ class Modo {
         sf::RectangleShape botao_facil, botao_medio, botao_dificil, botao_voltar;
         sf::Clock clock;
         sf::Color purple = sf::Color(128, 0, 128);
-        Dificuldade dificuldade_selecionada = Dificuldade::Nenhum;
     public: 
         Modo(const sf::Vector2u& windowSize);
 
