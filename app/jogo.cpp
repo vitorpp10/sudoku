@@ -15,9 +15,9 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
       label_pop_up(font),
       label_sim_pop_up(font),
       label_nao_pop_up(font),
-      label_pop_detalhe(font)
+      label_pop_detalhe(font), 
+      label_apagar(font)
 {
-
   //configura o titulo
   titulo.setString("Sudoku da Fernanda");
   titulo.setCharacterSize(55);
@@ -63,14 +63,14 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
 
   label_musica_trocar.setOrigin({lb_mj.size.x / 2.0f, lb_mj.size.y / 2.0f});
   label_musica_trocar.setPosition({272.f, OFFSET.y + 232.5f});
- 
+  
   //botao voltar jogo
   botao_voltar_jogo.setSize({300.f, 65.f});
   botao_voltar_jogo.setFillColor(sf::Color::White);
   botao_voltar_jogo.setOutlineThickness(2);
   botao_voltar_jogo.setOutlineColor(purple);
   botao_voltar_jogo.setOrigin({0.f, 0.f}); 
-  botao_voltar_jogo.setPosition({50.f, OFFSET.y + 650.f});
+  botao_voltar_jogo.setPosition({50.f, OFFSET.y + 671.f});
   
   label_voltar_jogo.setString("Sair");
   label_voltar_jogo.setCharacterSize(30);
@@ -78,7 +78,7 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
 
   sf::FloatRect lb_vj = label_voltar_jogo.getLocalBounds();
   label_voltar_jogo.setOrigin({lb_vj.size.x / 2.0f, lb_vj.size.y / 2.0f});
-  label_voltar_jogo.setPosition({200.f, OFFSET.y + 682.5f});
+  label_voltar_jogo.setPosition({200.f, OFFSET.y + 671.f + 32.5f});
   
   float centroX = 1920.f / 2.f; 
   float centroY = 1080.f / 2.f;
@@ -147,16 +147,98 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
   label_erro.setFillColor(sf::Color::Red);
   label_erro.setOrigin({0.f, 0.f});
   label_erro.setPosition({50.f, OFFSET.y});
+
+  //botoes painel
+  for (int i = 0; i < 9; i++) {
+    int linha = i / 3;
+    int coluna = i % 3;
+
+    float posX = OFFSET_PAINEL.x + (coluna *(TAM_BOTAO + ESPACAMENTO));
+    float posY = OFFSET_PAINEL.y + (linha *(TAM_BOTAO + ESPACAMENTO));
+
+    sf::RectangleShape botao;
+    botao.setSize({TAM_BOTAO, TAM_BOTAO});
+    botao.setPosition({posX, posY});
+    botao.setFillColor(sf::Color::Transparent);
+    botao.setOutlineColor(purple);
+    botao.setOutlineThickness(2.f);
+
+    botoes_painel.push_back(botao);
+
+    sf::Text label(font);
+    label.setString(std::to_string(i + 1));
+    label.setCharacterSize(40);
+    label.setFillColor(purple);
+
+    sf::FloatRect bounds = label.getLocalBounds();
+    label.setOrigin({
+        bounds.position.x + bounds.size.x / 2.f,
+        bounds.position.y + bounds.size.y / 2.f
+    });
+
+    label.setPosition({
+        posX + (TAM_BOTAO / 2.f),
+        posY + (TAM_BOTAO / 2.f)
+    });
+
+    labeis_painel.push_back(label);
+  }
+
+  //botao apagar
+  botao_apagar.setSize({TAM_BOTAO * 3 + (ESPACAMENTO * 2), 60.f});
+  botao_apagar.setPosition({OFFSET_PAINEL.x, OFFSET_PAINEL.y + (3 * (TAM_BOTAO + ESPACAMENTO))});
+  botao_apagar.setFillColor(sf::Color::Transparent);
+  botao_apagar.setOutlineColor(purple);
+  botao_apagar.setOutlineThickness(2.f);
+
+  label_apagar.setString("X");
+  label_apagar.setCharacterSize(40);
+  label_apagar.setFillColor(purple);
+
+  sf::FloatRect bounds_apagar = label_apagar.getLocalBounds();
+  label_apagar.setOrigin({
+    bounds_apagar.position.x + bounds_apagar.size.x / 2.f,
+    bounds_apagar.position.y + bounds_apagar.size.y / 2.f
+  });
+
+  label_apagar.setPosition({
+    OFFSET_PAINEL.x + (botao_apagar.getSize().x / 2.f),
+    botao_apagar.getPosition().y + (botao_apagar.getSize().y / 2.f)
+  });
 } 
 
 //tratar eventos 
 void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window, Tela& tela_atual) {
   if (event.is<sf::Event::MouseButtonPressed>()) {
     sf::Vector2i mouse_pos = sf::Mouse::getPosition(window);
-    sf::Vector2f mousePosF(static_cast<float>(mouse_pos.x), static_cast<float>(mouse_pos.y));
+    sf::Vector2f mousePosF(static_cast<float>(mouse_pos.x), static_cast<float>(mouse_pos.y)); 
+    sf::FloatRect area_tabuleiro({OFFSET.x, OFFSET.y}, {9 * TAM_CELULA, 9 * TAM_CELULA});
+    sf::FloatRect area_painel({OFFSET_PAINEL.x, OFFSET_PAINEL.y,}, {3 * TAM_BOTAO, 3 * TAM_BOTAO});
+    auto mousePosT = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+    auto mousePosP = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
     if (event.getIf<sf::Event::MouseButtonPressed>()->button == sf::Mouse::Button::Left) {
       if (tela_atual == Tela::Jogo) {
+        if (area_tabuleiro.contains(mousePosT) && desativar_tudo == false) {
+          int coluna = static_cast<int>((mousePosT.x - OFFSET.x) / TAM_CELULA);
+          int linha = static_cast<int>((mousePosT.y - OFFSET.y) / TAM_CELULA);
+
+          selecionada_tabuleiro = {linha, coluna};
+          ativarClique();
+        } else { selecionada_tabuleiro = {-1, -1}; }
+
+        if (area_painel.contains(mousePosP) && desativar_tudo == false) {
+          int coluna = static_cast<int>((mousePosP.x - OFFSET_PAINEL.x) / TAM_BOTAO);
+          int linha = static_cast<int>((mousePosP.y - OFFSET_PAINEL.y) / TAM_BOTAO);
+
+          selecionada_painel = {linha, coluna};
+          ativarClique();
+        } else { selecionada_painel = {-1, -1}; }
+
+        if (botao_apagar.getGlobalBounds().contains(mousePosF)) {
+          ativarClique();          
+        }
+
         if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
             ativarClique();
             popup = true;
@@ -232,7 +314,15 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
 }
 void Jogo::atualizarHoverJogo(const sf::RenderWindow& window, Tela& tela_atual) {
   sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-  if (tela_atual == Tela::Jogo) {
+  if (tela_atual == Tela::Jogo && popup == false && desativar_tudo == false) {
+    if (botao_apagar.getGlobalBounds().contains(mousePos)) {
+      botao_apagar.setFillColor(purple);
+      label_apagar.setFillColor(sf::Color::White);
+    } else {
+      botao_apagar.setFillColor(sf::Color::White);
+      label_apagar.setFillColor(purple);
+    }
+    
     if (botao_voltar_jogo.getGlobalBounds().contains(mousePos)) {
       botao_voltar_jogo.setFillColor(purple);
       label_voltar_jogo.setFillColor(sf::Color::White);
@@ -258,7 +348,7 @@ void Jogo::atualizarHoverJogo(const sf::RenderWindow& window, Tela& tela_atual) 
       botao_volume_jogo.setFillColor(sf::Color::White);
       label_volume_jogo.setFillColor(purple);
     }
-
+  }
     if (botao_sim_pop_up.getGlobalBounds().contains(mousePos)) {
       botao_sim_pop_up.setFillColor(purple);
       label_sim_pop_up.setFillColor(sf::Color::White);
@@ -274,7 +364,11 @@ void Jogo::atualizarHoverJogo(const sf::RenderWindow& window, Tela& tela_atual) 
       botao_nao_pop_up.setFillColor(sf::Color::White);
       label_nao_pop_up.setFillColor(purple);
     }
-  }
+
+    if (popup) {
+      botao_voltar_jogo.setFillColor(sf::Color::White);
+      label_voltar_jogo.setFillColor(purple);
+    }
 }
 
 //animacoes
@@ -293,6 +387,12 @@ void Jogo::desenhar(sf::RenderWindow& window) {
     for (int i = 0; i < 9; i++) {
       for (int j = 0; j < 9; j++) {
         celula.setPosition({OFFSET.x + (j * TAM_CELULA), OFFSET.y + (i * TAM_CELULA)});
+        
+        if (selecionada_tabuleiro.x == i && selecionada_tabuleiro.y == j) {
+          celula.setFillColor(transparent_purple);
+        } else {
+          celula.setFillColor(sf::Color::Transparent);
+        }
         window.draw(celula);
 
         if (grade[i][j] != 0) {
@@ -327,6 +427,24 @@ void Jogo::desenhar(sf::RenderWindow& window) {
       window.draw(linhaH);
     }
 
+    sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+    for (int i = 0; i < 9; i++) {
+
+      if (popup == false && desativar_tudo == false) {
+        if (botoes_painel[i].getGlobalBounds().contains(mousePos)) {
+          botoes_painel[i].setFillColor(purple);
+          labeis_painel[i].setFillColor(sf::Color::White);
+        } else {
+          botoes_painel[i].setFillColor(sf::Color::White);
+          labeis_painel[i].setFillColor(purple);
+        }
+      }
+
+      window.draw(botoes_painel[i]);
+      window.draw(labeis_painel[i]);
+    }  
+
     if (dificuldade_selecionada == Dificuldade::Facil) {
       count_erros = 0;
       label_erro.setString("Erros: Ilimitados");
@@ -343,11 +461,14 @@ void Jogo::desenhar(sf::RenderWindow& window) {
     window.draw(botao_musica_jogo);
     window.draw(botao_volume_jogo);
     window.draw(botao_voltar_jogo);
+    window.draw(botao_apagar);
+
     window.draw(label_erro);
     window.draw(label_volume_jogo);
     window.draw(label_musica_jogo);
     window.draw(label_musica_trocar);
     window.draw(label_voltar_jogo);
+    window.draw(label_apagar);
 
     if (popup) {
       window.draw(botao_fundo_escuro);

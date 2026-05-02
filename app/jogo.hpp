@@ -1,6 +1,7 @@
 #pragma once
 #include<SFML/Graphics.hpp>
 #include"def.hpp"
+#include<vector>
 
 class Jogo {
   private:
@@ -20,15 +21,27 @@ class Jogo {
     sf::Text titulo;
     sf::Text texto_numero;    
     
-    sf::Text label_erro, label_voltar_jogo, label_volume_jogo, label_musica_jogo, label_musica_trocar, label_pop_up, label_sim_pop_up, label_nao_pop_up, label_pop_detalhe;
+    sf::Text label_erro, label_voltar_jogo, label_volume_jogo, label_musica_jogo, label_musica_trocar, label_pop_up, label_sim_pop_up, label_nao_pop_up, label_pop_detalhe, label_apagar;
 
-    sf::RectangleShape botao_voltar_jogo, botao_volume_jogo, botao_musica_jogo, botao_pop_up, botao_sim_pop_up, botao_nao_pop_up, botao_fundo_escuro;
-    
+    sf::RectangleShape botao_voltar_jogo, botao_volume_jogo, botao_musica_jogo, botao_pop_up, botao_sim_pop_up, botao_nao_pop_up, botao_fundo_escuro, botao_apagar;
+
+    std::vector<sf::RectangleShape> botoes_painel;
+    std::vector<sf::Text> labeis_painel;
+
     sf::Clock clock;
-    //medidas tabuleiro 
+
+    //medidas tabuleiro e input 
+    int grade_input[9][9];
+    sf::Vector2i selecionada_tabuleiro = {-1, -1}; 
+    sf::Vector2i selecionada_painel = {-1, -1};
     const float TAM_CELULA = 80.f;
     sf::Vector2f OFFSET = {100.f, 150.f};
+    sf::Vector2f OFFSET_PAINEL = {70.f, 450.f};
+    const float ESPACAMENTO = 10.f;
+    const float TAM_BOTAO = 80.f;
     sf::Color purple = sf::Color(128, 0, 128);
+    sf::Color transparent_purple = sf::Color(128, 0, 128, 100);
+    
     int grade[9][9] = {0};
   public:
     void registrarErros(int n) {
