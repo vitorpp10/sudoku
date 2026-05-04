@@ -216,9 +216,31 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
     sf::FloatRect area_painel({OFFSET_PAINEL.x, OFFSET_PAINEL.y,}, {3 * TAM_BOTAO, 3 * TAM_BOTAO});
     auto mousePosT = window.mapPixelToCoords(sf::Mouse::getPosition(window));
     auto mousePosP = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+    auto mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
     if (event.getIf<sf::Event::MouseButtonPressed>()->button == sf::Mouse::Button::Left) {
       if (tela_atual == Tela::Jogo) {
+
+        if (selecionada_tabuleiro.x != -1 && selecionada_tabuleiro.y != -1) {
+            for (int i = 0; i < 9; i++) {
+              if (botoes_painel[i].getGlobalBounds().contains(mousePosF)) {
+                
+                if (grade[selecionada_tabuleiro.x][selecionada_tabuleiro.y] == 0) { 
+                  grade[selecionada_tabuleiro.x][selecionada_tabuleiro.y] = i + 1;
+                  ativarClique();
+                  break;
+                } else {
+                  //SOM DE ERRO AQUI + MUDAR QUADRADO PARA VERMELHO
+                }
+              }
+            }
+
+            if (botao_apagar.getGlobalBounds().contains(mousePosF)) {
+              grade[selecionada_tabuleiro.x][selecionada_tabuleiro.y] = 0;
+              ativarClique();
+            }
+        }
+
         if (area_tabuleiro.contains(mousePosT) && desativar_tudo == false) {
           int coluna = static_cast<int>((mousePosT.x - OFFSET.x) / TAM_CELULA);
           int linha = static_cast<int>((mousePosT.y - OFFSET.y) / TAM_CELULA);
@@ -249,6 +271,11 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
         if (desativar_pop_up == false) {
           if (botao_pop_up.getGlobalBounds().contains(mousePosF)) {
             if (botao_sim_pop_up.getGlobalBounds().contains(mousePosF)) {
+              for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                  grade[i][j] = 0;
+                }
+              }
               ativarClique();
               //resetar musica assim que sair da tela jogo
               musicaJogo.stop();
@@ -409,6 +436,7 @@ void Jogo::desenhar(sf::RenderWindow& window) {
             OFFSET.y + (i * TAM_CELULA) + (TAM_CELULA / 2.f)
         });
 
+        texto_numero.setFillColor(purple);
         window.draw(texto_numero);
         } 
       }
