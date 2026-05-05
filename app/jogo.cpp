@@ -1,7 +1,12 @@
 #include"jogo.hpp"
 #include <SFML/Window/Mouse.hpp>
 #include<cmath>
+#include<random>
+#include<chrono>
+#include<algorithm>
 #include<string>
+
+using namespace std::chrono;
 
 Jogo::Jogo(const sf::Vector2u& windowSize) 
     : font("../assets/PressStart2P-Regular.ttf"), 
@@ -220,17 +225,25 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
 
     if (event.getIf<sf::Event::MouseButtonPressed>()->button == sf::Mouse::Button::Left) {
       if (tela_atual == Tela::Jogo) {
-
         if (selecionada_tabuleiro.x != -1 && selecionada_tabuleiro.y != -1) {
             for (int i = 0; i < 9; i++) {
               if (botoes_painel[i].getGlobalBounds().contains(mousePosF)) {
                 
-                if (grade[selecionada_tabuleiro.x][selecionada_tabuleiro.y] == 0) { 
-                  grade[selecionada_tabuleiro.x][selecionada_tabuleiro.y] = i + 1;
-                  ativarClique();
-                  break;
-                } else {
-                  //SOM DE ERRO AQUI + MUDAR QUADRADO PARA VERMELHO
+                if (!numero_fixo[selecionada_tabuleiro.x][selecionada_tabuleiro.y]) {
+                  if (grade[selecionada_tabuleiro.x][selecionada_tabuleiro.y] == 0) { 
+                    grade[selecionada_tabuleiro.x][selecionada_tabuleiro.y] = i + 1;
+                    ativarClique();
+                    break;
+                  } else {
+                    //SOM DE ERRO AQUI
+                    if (!musicaErro.openFromFile(caminho_erro)) {
+                      perror("musica do erro");
+                      exit(EXIT_FAILURE);
+                    }   else { musicaErro.play(); }
+                  }
+                } else { 
+                  if (!musicaErro.openFromFile(caminho_erro)) { perror("musica do erro"); exit(EXIT_FAILURE); } 
+                  musicaErro.play(); 
                 }
               }
             }
@@ -257,11 +270,11 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
           ativarClique();
         } else { selecionada_painel = {-1, -1}; }
 
-        if (botao_apagar.getGlobalBounds().contains(mousePosF)) {
+        if (botao_apagar.getGlobalBounds().contains(mousePosF) && desativar_tudo == false) {
           ativarClique();          
         }
 
-        if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF)) {
+        if (botao_voltar_jogo.getGlobalBounds().contains(mousePosF) && desativar_tudo == false) {
             ativarClique();
             popup = true;
             desativar_tudo = true; 
@@ -290,6 +303,7 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
               popup = false;
               desativar_tudo = false;
               desativar_pop_up = true;
+              gerar_fixos = false;
             } else if (botao_nao_pop_up.getGlobalBounds().contains(mousePosF)) {
               ativarClique();
               desativar_tudo = false;
@@ -401,9 +415,89 @@ void Jogo::atualizarHoverJogo(const sf::RenderWindow& window, Tela& tela_atual) 
 //animacoes
 void Jogo::atualizar() {}
 
+//para avaliar se possui x numero em y linha ou z coluna ou na grade inteira em si
+bool Jogo::numero_valido(int linha, int coluna, int num) {
+  for (int i = 0; i < 9; i++) {
+    if (grade[linha][i] == num) { return false; }
+    if (grade[i][coluna] == num) { return false; }
+  }
+
+  int inicio_linha = linha - (linha % 3);
+  int inicio_coluna = coluna - (coluna % 3);
+
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      if (grade[i + inicio_linha][j + inicio_coluna] == num) { return false; }
+    }
+  }
+  return true;
+}
+
+//preenche tabuleiro com aleatoriedade e verifica se numero é valido para entrar em x grade
+bool Jogo::preencher_tabuleiro() {
+  for (int linha = 0; linha < 9; linha++) {
+    for (int coluna = 0; coluna < 9; coluna++) {
+      if (grade[linha][coluna] == 0) {
+        std::vector<int> numeros = {1, 2, 3, 4, 5, 6, 7, 8, 9}; 
+        unsigned semente = system_clock::now().time_since_epoch().count();
+        std::shuffle(numeros.begin(), numeros.end(), std::default_random_engine(semente));
+
+        for (int num : numeros) {
+          if (numero_valido(linha, coluna, num)) {
+            grade[linha][coluna] = num;
+
+            if (preencher_tabuleiro()) {
+              return true;
+            } 
+
+            grade[linha][coluna] = 0;
+          }
+        }
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+
+void Jogo::gerarNovoJogo(DificuldadeJogo dif) {
+  for (int i = 0; i < 9; i++) {
+    for (int j = 0; j < 9; j++) {
+      grade[i][j] = 0;
+      numero_fixo[i][j] = false;
+    }
+  }
+
+  preencher_tabuleiro();
+
+  int buracos = 0;
+  switch (dif) {
+    case DificuldadeJogo::facil: buracos = 40; break;
+    case DificuldadeJogo::medio: buracos = 50; break;
+    case DificuldadeJogo::dificil: buracos = 58; break;
+  }
+
+  while (buracos > 0) {
+    int r_linha = rand() % 9;
+    int r_col = rand() % 9;
+
+    if (grade[r_linha][r_col] != 0) {
+      grade[r_linha][r_col] = 0;
+      buracos--;
+    }
+  }
+
+  for (int i = 0; i < 9; i++) {
+    for (int j = 0; j < 9; j++) {
+      if (grade[i][j] != 0) {
+        numero_fixo[i][j] = true;
+      }
+    }
+  }
+}
 //mostrar na tela 
-void Jogo::desenhar(sf::RenderWindow& window) {
-    
+void Jogo::desenhar(sf::RenderWindow& window) {  
     //cores sudoku
     sf::RectangleShape celula({TAM_CELULA, TAM_CELULA});
     celula.setFillColor(sf::Color::Transparent);
@@ -436,11 +530,16 @@ void Jogo::desenhar(sf::RenderWindow& window) {
             OFFSET.y + (i * TAM_CELULA) + (TAM_CELULA / 2.f)
         });
 
-        texto_numero.setFillColor(purple);
-        window.draw(texto_numero);
-        } 
+        if (numero_fixo[i][j]) {
+          texto_numero.setFillColor(sf::Color::Black);
+          window.draw(texto_numero);
+        } else { 
+          texto_numero.setFillColor(purple);
+          window.draw(texto_numero);  
+        }  
       }
     }
+  }
     
     //linhas verticas e horizontais desenho
     for (int i = 0; i <= 9; i += 3) {
@@ -489,14 +588,15 @@ void Jogo::desenhar(sf::RenderWindow& window) {
     window.draw(botao_musica_jogo);
     window.draw(botao_volume_jogo);
     window.draw(botao_voltar_jogo);
+  
     window.draw(botao_apagar);
+    window.draw(label_apagar);
 
     window.draw(label_erro);
     window.draw(label_volume_jogo);
     window.draw(label_musica_jogo);
     window.draw(label_musica_trocar);
     window.draw(label_voltar_jogo);
-    window.draw(label_apagar);
 
     if (popup) {
       window.draw(botao_fundo_escuro);
@@ -510,4 +610,4 @@ void Jogo::desenhar(sf::RenderWindow& window) {
       window.draw(label_nao_pop_up);
     } 
     window.display(); 
-}
+  }

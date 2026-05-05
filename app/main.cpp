@@ -10,11 +10,13 @@
 #include"estatisticas.hpp"
 
 Dificuldade dificuldade_selecionada = Dificuldade::Nenhum;
+DificuldadeJogo dificuldade_jogo = DificuldadeJogo::nenhum;
 
 sf::Music musicaGlobal, musicaJogo, toqueGlobal;
 std::string caminhoToque = "../assets/clique.ogg"; //caminho da musica aqui
 int musicaAtual = 0;
 int musicaAtualJogo = 0;
+bool gerar_fixos = false;
 
 void ativarClique() {
   if (toqueGlobal.openFromFile(caminhoToque)) {
@@ -61,7 +63,12 @@ int main() {
             } else if (tela_atual == Tela::Modo) {
               modo.tratarEventos(*event, window, tela_atual);
             }
-        } 
+        }  
+        
+        if (gerar_fixos == true) {
+          jogo.gerarNovoJogo(dificuldade_jogo);
+          gerar_fixos = false;
+        }
 
         // limpa a tela
         window.clear(sf::Color::White);

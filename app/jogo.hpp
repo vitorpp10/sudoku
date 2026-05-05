@@ -10,6 +10,8 @@ class Jogo {
       "musica1.ogg",
       "musica2.ogg"
     };
+    sf::Music musicaErro;
+    std::string caminho_erro = "../assets/erro.ogg";
     int musicaAtual = 0;
     bool popup = false;
     bool desativar_tudo = false;
@@ -43,6 +45,9 @@ class Jogo {
     sf::Color transparent_purple = sf::Color(128, 0, 128, 100);
     
     int grade[9][9] = {0};
+    bool numero_fixo[9][9] = {0};
+    bool numero_valido(int linha, int coluna, int num);
+    bool preencher_tabuleiro();
   public:
     void registrarErros(int n) {
       count_erros += n;
@@ -56,6 +61,8 @@ class Jogo {
       count_erros = 0;
     }
 
+    void gerarNovoJogo(DificuldadeJogo x);
+    
     Jogo(const sf::Vector2u& windowSize);
 
     void tratarEventos(const sf::Event& event, const sf::RenderWindow& window, Tela& tela_atual);

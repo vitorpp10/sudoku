@@ -86,14 +86,20 @@ void Modo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
             if (botao_facil.getGlobalBounds().contains(mousePosF)) {
                 ativarClique();
                 dificuldade_selecionada = Dificuldade::Facil;
+                dificuldade_jogo = DificuldadeJogo::facil;
+                gerar_fixos = true;
                 tela_atual = Tela::Carregando;
             } else if (botao_medio.getGlobalBounds().contains(mousePosF)) {
                 ativarClique();
                 dificuldade_selecionada = Dificuldade::Medio; 
+                dificuldade_jogo = DificuldadeJogo::medio;
+                gerar_fixos = true;
                 tela_atual = Tela::Carregando;     
             } else if (botao_dificil.getGlobalBounds().contains(mousePosF)) {
                 ativarClique();
                 dificuldade_selecionada = Dificuldade::Dificil;
+                dificuldade_jogo = DificuldadeJogo::dificil;
+                gerar_fixos = true;
                 tela_atual = Tela::Carregando;
             } else if (botao_voltar.getGlobalBounds().contains(mousePosF)) {
                 ativarClique();
