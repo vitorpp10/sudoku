@@ -8,7 +8,8 @@ Modo::Modo(const sf::Vector2u& windowSize)
     label_facil(font),
     label_medio(font),
     label_dificil(font),
-    label_voltar(font)     
+    label_voltar(font),
+    label_como_jogar(font)
 {
     titulo.setString("Sudoku da Fernanda");
     titulo.setCharacterSize(55);
@@ -61,13 +62,28 @@ Modo::Modo(const sf::Vector2u& windowSize)
     label_dificil.setOrigin({lb_d.size.x / 2.0f, lb_d.size.y / 2.0f});
     label_dificil.setPosition(botao_dificil.getPosition());
 
+    //botao como jogar
+    botao_como_jogar.setSize({400.f, 80.f});
+    botao_como_jogar.setFillColor(sf::Color::White);
+    botao_como_jogar.setOutlineThickness(2);
+    botao_como_jogar.setOutlineColor(purple);
+    botao_como_jogar.setOrigin({200.f, 40.f});
+    botao_como_jogar.setPosition({windowSize.x / 2.0f, 600.f});
+
+    label_como_jogar.setString("Tutorial");
+    label_como_jogar.setCharacterSize(40);
+    label_como_jogar.setFillColor(purple);
+    sf::FloatRect lb_cm = label_como_jogar.getLocalBounds();
+    label_como_jogar.setOrigin({lb_cm.size.x / 2.0f, lb_cm.size.y / 2.0f});
+    label_como_jogar.setPosition(botao_como_jogar.getPosition());
+    
     //botao voltar
     botao_voltar.setSize({300.f, 65.f});
     botao_voltar.setFillColor(sf::Color::White);
     botao_voltar.setOutlineThickness(2);
     botao_voltar.setOutlineColor(purple);
     botao_voltar.setOrigin({150.f, 32.5f});
-    botao_voltar.setPosition({windowSize.x / 2.0f, 650.f});
+    botao_voltar.setPosition({windowSize.x / 2.0f, 750.f});
 
     label_voltar.setString("Voltar");
     label_voltar.setCharacterSize(35);
@@ -104,6 +120,9 @@ void Modo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
             } else if (botao_voltar.getGlobalBounds().contains(mousePosF)) {
                 ativarClique();
                 tela_atual = Tela::Menu;
+            } else if (botao_como_jogar.getGlobalBounds().contains(mousePosF)) {
+                ativarClique();
+                tela_atual = Tela::ComoJogar;
             }
         }
     }
@@ -144,6 +163,14 @@ void Modo::atualizarHoverModo(const sf::RenderWindow& window, Tela& tela_atual) 
             botao_voltar.setFillColor(sf::Color::White);
             label_voltar.setFillColor(purple);
         }
+
+        if (botao_como_jogar.getGlobalBounds().contains(mousePos)) {
+            botao_como_jogar.setFillColor(purple);
+            label_como_jogar.setFillColor(sf::Color::White);
+        } else {
+            botao_como_jogar.setFillColor(sf::Color::White);
+            label_como_jogar.setFillColor(purple);
+        }
     }
 }
 
@@ -160,7 +187,9 @@ void Modo::desenhar(sf::RenderWindow& window) {
     window.draw(botao_medio);
     window.draw(botao_dificil);
     window.draw(botao_voltar);
+    window.draw(botao_como_jogar);
 
+    window.draw(label_como_jogar);
     window.draw(label_facil);
     window.draw(label_medio);
     window.draw(label_dificil);

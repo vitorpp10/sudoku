@@ -6,8 +6,8 @@ class Modo {
     private:
         sf::Font font;
         sf::Text titulo;
-        sf::Text label_facil, label_medio, label_dificil, label_voltar;
-        sf::RectangleShape botao_facil, botao_medio, botao_dificil, botao_voltar;
+        sf::Text label_facil, label_medio, label_dificil, label_voltar, label_como_jogar;
+        sf::RectangleShape botao_facil, botao_medio, botao_dificil, botao_voltar, botao_como_jogar;
         sf::Clock clock;
         sf::Color purple = sf::Color(128, 0, 128);
     public: 

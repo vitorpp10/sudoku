@@ -4,7 +4,7 @@
 
 enum class Dificuldade { Nenhum, Facil, Medio, Dificil };
 enum class DificuldadeJogo { nenhum, facil, medio, dificil };
-enum class Tela { Menu, Jogo, Opcoes, Estatisticas, Carregando, Modo};
+enum class Tela { Menu, Jogo, Opcoes, Estatisticas, Carregando, Modo, ComoJogar };
 extern int musicaAtual, musicaAtualJogo;
 extern bool gerar_fixos;
 extern sf::Music musicaGlobal, musicaJogo, toqueGlobal;

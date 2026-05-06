@@ -2,6 +2,7 @@
 #include<SFML/Audio.hpp>
 #include<cstdlib>
 #include<string>
+#include"como_jogar.hpp"
 #include"modo.hpp"
 #include"menu.hpp" // incluimos menu hpp aqui
 #include"jogo.hpp" 
@@ -39,6 +40,7 @@ int main() {
     Estatisticas estatisticas(window.getSize());
     Carregando carregando(window.getSize());
     Modo modo(window.getSize());
+    ComoJogar como_jogar(window.getSize());
 
     // loop infinito da janela
     while (window.isOpen()) {
@@ -62,6 +64,8 @@ int main() {
               carregando.tratarEventos(*event, window, tela_atual);
             } else if (tela_atual == Tela::Modo) {
               modo.tratarEventos(*event, window, tela_atual);
+            } else if (tela_atual == Tela::ComoJogar) { 
+              como_jogar.tratarEventos(*event, window, tela_atual);
             }
         }  
         
@@ -99,6 +103,10 @@ int main() {
           modo.atualizar();
           modo.atualizarHoverModo(window, tela_atual);
           modo.desenhar(window);
+        } else if (tela_atual == Tela::ComoJogar) {
+          como_jogar.atualizar();
+          como_jogar.atualizarHoverComoJogar(window, tela_atual);
+          como_jogar.desenhar(window);
         }
         window.display();
     }  
