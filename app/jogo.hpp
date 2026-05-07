@@ -10,22 +10,31 @@ class Jogo {
       "musica1.ogg",
       "musica2.ogg"
     };
+    bool ganhou = false; 
+    bool perdeu = false;
+    int streak = 0;
+    int vitorias = 0;
+    int derrotas = 0;
+    int gabarito[9][9];
+    bool errou[9][9];
+    int count_erros;
     sf::Music musicaErro;
     std::string caminho_erro = "../assets/erro.ogg";
     int musicaAtual = 0;
     bool popup = false;
     bool desativar_tudo = false;
     bool desativar_pop_up = true;
+    bool desativar_pop_up_derrota = false;
+    bool desativar_pop_up_vitoria = false;
     int volume_idx = 4;
     float niveis_volume[5] = {0.f, 25.f, 50.f, 75.f, 100.f};
-    int count_erros = 0;
     sf::Font font;
     sf::Text titulo;
     sf::Text texto_numero;    
     
-    sf::Text label_erro, label_voltar_jogo, label_volume_jogo, label_musica_jogo, label_musica_trocar, label_pop_up, label_sim_pop_up, label_nao_pop_up, label_pop_detalhe, label_apagar;
+    sf::Text label_erro, label_voltar_jogo, label_volume_jogo, label_musica_jogo, label_musica_trocar, label_pop_up, label_sim_pop_up, label_nao_pop_up, label_pop_detalhe, label_apagar, label_derrota, label_vitoria, label_continuar, label_derrota_detalhe;
 
-    sf::RectangleShape botao_voltar_jogo, botao_volume_jogo, botao_musica_jogo, botao_pop_up, botao_sim_pop_up, botao_nao_pop_up, botao_fundo_escuro, botao_apagar;
+    sf::RectangleShape botao_voltar_jogo, botao_volume_jogo, botao_musica_jogo, botao_pop_up, botao_sim_pop_up, botao_nao_pop_up, botao_fundo_escuro, botao_apagar, botao_derrota, botao_vitoria, botao_continuar;
 
     std::vector<sf::RectangleShape> botoes_painel;
     std::vector<sf::Text> labeis_painel;
@@ -49,18 +58,8 @@ class Jogo {
     bool numero_valido(int linha, int coluna, int num);
     bool preencher_tabuleiro();
   public:
-    void registrarErros(int n) {
-      count_erros += n;
-    }
-
-    int getErros() const {
-      return count_erros;
-    } 
-
-    void resetErros() {
-      count_erros = 0;
-    }
-
+    void registrarJogada(int linha, int coluna, int num);
+    
     void gerarNovoJogo(DificuldadeJogo x);
     
     Jogo(const sf::Vector2u& windowSize);

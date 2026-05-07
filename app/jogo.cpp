@@ -21,7 +21,11 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
       label_sim_pop_up(font),
       label_nao_pop_up(font),
       label_pop_detalhe(font), 
-      label_apagar(font)
+      label_apagar(font),
+      label_vitoria(font), 
+      label_derrota(font),
+      label_continuar(font),
+      label_derrota_detalhe(font)
 {
   //configura o titulo
   titulo.setString("Sudoku da Fernanda");
@@ -210,7 +214,45 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
     OFFSET_PAINEL.x + (botao_apagar.getSize().x / 2.f),
     botao_apagar.getPosition().y + (botao_apagar.getSize().y / 2.f)
   });
-} 
+
+  //botao derrota pop up
+  botao_derrota.setSize({800.f, 450.f});
+  botao_derrota.setOrigin({400.f, 225.f});
+  botao_derrota.setPosition({centroX, centroY});
+  botao_derrota.setFillColor(sf::Color::White);
+  botao_derrota.setOutlineThickness(4);
+  botao_derrota.setOutlineColor(purple);
+
+  label_derrota.setString("Voce perdeu kk");
+  label_derrota.setCharacterSize(37);
+  label_derrota.setFillColor(purple);
+  sf::FloatRect bounds_pdd = label_derrota.getLocalBounds();
+  label_derrota.setOrigin({bounds_pdd.position.x + bounds_pdd.size.x / 2.f, bounds_pdd.position.y + bounds_pdd.size.y / 2.f});
+  label_derrota.setPosition({centroX, centroY - 120.f});
+
+  //label detalhe
+  label_derrota_detalhe.setString("Sua streak foi zerada");
+  label_derrota_detalhe.setCharacterSize(23);
+  label_derrota_detalhe.setFillColor(purple);
+  sf::FloatRect bounds_pddd = label_derrota_detalhe.getLocalBounds();
+  label_derrota_detalhe.setOrigin({bounds_pddd.position.x + bounds_pddd.size.x / 2.f, bounds_pddd.position.y + bounds_pddd.size.y / 2.f});
+  label_derrota_detalhe.setPosition({centroX, centroY - 70.f});
+
+  //botao continuar pop up
+  botao_continuar.setSize({280.f, 60.f});
+  botao_continuar.setFillColor(sf::Color::White);
+  botao_continuar.setOutlineThickness(2);
+  botao_continuar.setOutlineColor(purple);
+  botao_continuar.setOrigin({140.f, 30.f});
+  botao_continuar.setPosition({windowSize.x / 2.0f, 700.f});
+
+  label_continuar.setString("Continuar");
+  label_continuar.setCharacterSize(25);
+  label_continuar.setFillColor(purple);
+  sf::FloatRect lb_v = label_continuar.getLocalBounds();
+  label_continuar.setOrigin({lb_v.size.x / 2.0f, lb_v.size.y / 2.0f});
+  label_continuar.setPosition(botao_continuar.getPosition());
+}  
 
 //tratar eventos 
 void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window, Tela& tela_atual) {
@@ -226,31 +268,28 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
     if (event.getIf<sf::Event::MouseButtonPressed>()->button == sf::Mouse::Button::Left) {
       if (tela_atual == Tela::Jogo) {
         if (selecionada_tabuleiro.x != -1 && selecionada_tabuleiro.y != -1) {
-            for (int i = 0; i < 9; i++) {
-              if (botoes_painel[i].getGlobalBounds().contains(mousePosF)) {
-                
-                if (!numero_fixo[selecionada_tabuleiro.x][selecionada_tabuleiro.y]) {
-                  if (grade[selecionada_tabuleiro.x][selecionada_tabuleiro.y] == 0) { 
-                    grade[selecionada_tabuleiro.x][selecionada_tabuleiro.y] = i + 1;
-                    ativarClique();
-                    break;
-                  } else {
-                    //SOM DE ERRO AQUI
-                    if (!musicaErro.openFromFile(caminho_erro)) {
-                      perror("musica do erro");
-                      exit(EXIT_FAILURE);
-                    }   else { musicaErro.play(); }
-                  }
-                } else { 
-                  if (!musicaErro.openFromFile(caminho_erro)) { perror("musica do erro"); exit(EXIT_FAILURE); } 
-                  musicaErro.play(); 
-                }
+          bool clicou = false; 
+          for (int i = 0; i < 9; i++) {
+            if (botoes_painel[i].getGlobalBounds().contains(mousePosF)) {
+              clicou = true;
+              if (!numero_fixo[selecionada_tabuleiro.x][selecionada_tabuleiro.y]) {
+                  registrarJogada(selecionada_tabuleiro.x, selecionada_tabuleiro.y, i + 1); 
+                  ativarClique();
+                } else {
+                  //SOM DE ERRO AQUI
+                  if (musicaErro.openFromFile(caminho_erro)) { musicaErro.play(); }
+                  break;
               }
             }
+          }
 
             if (botao_apagar.getGlobalBounds().contains(mousePosF)) {
-              grade[selecionada_tabuleiro.x][selecionada_tabuleiro.y] = 0;
-              ativarClique();
+              if (!numero_fixo[selecionada_tabuleiro.x][selecionada_tabuleiro.y]) {
+                registrarJogada(selecionada_tabuleiro.x, selecionada_tabuleiro.y, 0);
+                ativarClique();
+              } else {
+                if (musicaErro.openFromFile(caminho_erro)) { musicaErro.play(); }
+              }
             }
         }
 
@@ -281,6 +320,34 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
             desativar_pop_up = false;
         }
         
+        if (perdeu) {
+          desativar_tudo = true;
+          if (desativar_pop_up_derrota == false) {
+            if (botao_derrota.getGlobalBounds().contains(mousePosF)) {
+              if (botao_continuar.getGlobalBounds().contains(mousePosF)) {
+                for (int i = 0; i < 9; i++) {
+                  for (int j = 0; j < 9; j++) {
+                    grade[i][j] = 0;
+                  }
+                }
+                ativarClique();
+                musicaJogo.stop();
+                musicaAtualJogo = 0;
+                musicaGlobal.play();
+
+                musicaGlobal.setVolume(niveis_volume[4]);
+                musicaJogo.setVolume(niveis_volume[4]);
+
+                tela_atual = Tela::Menu;
+                desativar_tudo = false;
+                desativar_pop_up_derrota = true;
+                gerar_fixos = false;
+              }
+            }
+          }
+        }
+      }
+
         if (desativar_pop_up == false) {
           if (botao_pop_up.getGlobalBounds().contains(mousePosF)) {
             if (botao_sim_pop_up.getGlobalBounds().contains(mousePosF)) {
@@ -352,7 +419,7 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
       }
     }
   }
-}
+
 void Jogo::atualizarHoverJogo(const sf::RenderWindow& window, Tela& tela_atual) {
   sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
   if (tela_atual == Tela::Jogo && popup == false && desativar_tudo == false) {
@@ -409,6 +476,16 @@ void Jogo::atualizarHoverJogo(const sf::RenderWindow& window, Tela& tela_atual) 
     if (popup) {
       botao_voltar_jogo.setFillColor(sf::Color::White);
       label_voltar_jogo.setFillColor(purple);
+    }
+
+    if (perdeu) {
+      if (botao_continuar.getGlobalBounds().contains(mousePos)) {
+        botao_continuar.setFillColor(purple);
+        label_continuar.setFillColor(sf::Color::White);
+      } else {
+        botao_continuar.setFillColor(sf::Color::White);
+        label_continuar.setFillColor(purple);
+      }
     }
 }
 
@@ -470,7 +547,15 @@ void Jogo::gerarNovoJogo(DificuldadeJogo dif) {
   }
 
   preencher_tabuleiro();
-
+  
+  for (int i = 0; i < 9; i++ ) { 
+    for (int j = 0; j < 9; j++) {
+      gabarito[i][j] = grade[i][j];
+      errou[i][j] = false;
+    }
+  }
+  count_erros = 0;
+  
   int buracos = 0;
   switch (dif) {
     case DificuldadeJogo::facil: buracos = 40; break;
@@ -496,6 +581,35 @@ void Jogo::gerarNovoJogo(DificuldadeJogo dif) {
     }
   }
 }
+
+void Jogo::registrarJogada(int linha, int coluna, int num) {
+  if (num == 0) {
+    grade[linha][coluna] = 0;
+    errou[linha][coluna] = false;
+    return;
+  }
+
+  if (num != gabarito[linha][coluna]) {
+    errou[linha][coluna] = true;
+    grade[linha][coluna] = num;
+
+    if (dificuldade_jogo != DificuldadeJogo::facil) {
+      count_erros++;
+      int limite;
+      if (dificuldade_jogo == DificuldadeJogo::medio) { limite = 5; } else {  limite = 3; }
+      if (count_erros >= limite) {
+        perdeu = true;
+        derrotas++;
+        streak = 0;
+        desativar_pop_up_derrota = false;
+      }
+    }
+  } else {
+    errou[linha][coluna] = false;
+    grade[linha][coluna] = num;
+  }
+}
+
 //mostrar na tela 
 void Jogo::desenhar(sf::RenderWindow& window) {  
     //cores sudoku
@@ -530,7 +644,9 @@ void Jogo::desenhar(sf::RenderWindow& window) {
             OFFSET.y + (i * TAM_CELULA) + (TAM_CELULA / 2.f)
         });
 
-        if (numero_fixo[i][j]) {
+        if (errou[i][j]) {
+          texto_numero.setFillColor(sf::Color::Red);
+        } else if (numero_fixo[i][j]) {
           texto_numero.setFillColor(sf::Color::Black);
           window.draw(texto_numero);
         } else { 
@@ -573,15 +689,10 @@ void Jogo::desenhar(sf::RenderWindow& window) {
     }  
 
     if (dificuldade_selecionada == Dificuldade::Facil) {
-      count_erros = 0;
       label_erro.setString("Erros: Ilimitados");
     } else if (dificuldade_selecionada == Dificuldade::Medio) {
-      count_erros = 0;
-      registrarErros(4);
       label_erro.setString("Erros: " + std::to_string(count_erros) + "/5");
     } else if (dificuldade_selecionada == Dificuldade::Dificil) {
-      count_erros = 0;
-      registrarErros(2);
       label_erro.setString("Erros: " + std::to_string(count_erros) + "/3");      
     } 
 
@@ -608,6 +719,16 @@ void Jogo::desenhar(sf::RenderWindow& window) {
       window.draw(label_sim_pop_up);
       window.draw(botao_nao_pop_up);
       window.draw(label_nao_pop_up);
-    } 
+    }
+    
+    if (perdeu && desativar_pop_up_derrota == false) {
+      window.draw(botao_fundo_escuro);
+      window.draw(botao_derrota);
+      window.draw(label_derrota);
+      window.draw(label_derrota_detalhe);
+
+      window.draw(botao_continuar);
+      window.draw(label_continuar);
+    }
     window.display(); 
   }
