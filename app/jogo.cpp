@@ -25,7 +25,8 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
       label_vitoria(font), 
       label_derrota(font),
       label_continuar(font),
-      label_derrota_detalhe(font)
+      label_derrota_detalhe(font),
+      label_vitoria_detalhe(font)
 {
   //configura o titulo
   titulo.setString("Sudoku da Fernanda");
@@ -252,6 +253,28 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
   sf::FloatRect lb_v = label_continuar.getLocalBounds();
   label_continuar.setOrigin({lb_v.size.x / 2.0f, lb_v.size.y / 2.0f});
   label_continuar.setPosition(botao_continuar.getPosition());
+
+  //botao vitoria pop up
+  botao_vitoria.setSize({800.f, 450.f});
+  botao_vitoria.setOrigin({400.f, 225.f});
+  botao_vitoria.setPosition({centroX, centroY});
+  botao_vitoria.setFillColor(sf::Color::White);
+  botao_vitoria.setOutlineThickness(4);
+  botao_vitoria.setOutlineColor(purple);
+
+  label_vitoria.setString("Parabens!!!");
+  label_vitoria.setCharacterSize(37);
+  label_vitoria.setFillColor(purple);
+  sf::FloatRect bounds_pdv = label_vitoria.getLocalBounds();
+  label_vitoria.setOrigin({bounds_pdv.position.x + bounds_pdv.size.x / 2.f, bounds_pdv.position.y + bounds_pdv.size.y / 2.f});
+  label_vitoria.setPosition({centroX, centroY - 120.f});
+
+  //label detalhe
+  label_vitoria_detalhe.setCharacterSize(23);
+  label_vitoria_detalhe.setFillColor(purple);
+  sf::FloatRect bounds_pdvv = label_vitoria_detalhe.getLocalBounds();
+  label_vitoria_detalhe.setOrigin({bounds_pdvv.position.x + bounds_pdvv.size.x / 2.f, bounds_pdvv.position.y + bounds_pdvv.size.y / 2.f});
+  label_vitoria_detalhe.setPosition({centroX, centroY - 70.f});
 }  
 
 //tratar eventos 
@@ -348,6 +371,33 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
         }
       }
 
+      if (ganhou) {
+        desativar_tudo = true;
+        if (desativar_pop_up_vitoria == false) {
+          if (botao_vitoria.getGlobalBounds().contains(mousePosF)) {
+            if (botao_continuar.getGlobalBounds().contains(mousePosF)) {
+              for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                  grade[i][j] = 0;
+                }
+              }
+              ativarClique();
+              musicaJogo.stop();
+              musicaAtualJogo = 0;
+              musicaGlobal.play();
+
+              musicaGlobal.setVolume(niveis_volume[4]);
+              musicaJogo.setVolume(niveis_volume[4]);
+
+              tela_atual = Tela::Menu;
+              desativar_tudo = false;
+              desativar_pop_up_vitoria = true;
+              gerar_fixos = false;
+            }
+          }
+        }
+      }
+
         if (desativar_pop_up == false) {
           if (botao_pop_up.getGlobalBounds().contains(mousePosF)) {
             if (botao_sim_pop_up.getGlobalBounds().contains(mousePosF)) {
@@ -365,7 +415,8 @@ void Jogo::tratarEventos(const sf::Event& event, const sf::RenderWindow& window,
               //resetar volume assim que sair da tela jogo 
               musicaGlobal.setVolume(niveis_volume[4]);
               musicaJogo.setVolume(niveis_volume[4]);
-
+              
+              streak = 0;
               tela_atual = Tela::Menu;
               popup = false;
               desativar_tudo = false;
@@ -604,10 +655,25 @@ void Jogo::registrarJogada(int linha, int coluna, int num) {
         desativar_pop_up_derrota = false;
       }
     }
+    if (checarVitoria()) {
+      ganhou = true;
+      desativar_tudo = true;
+      vitorias++; 
+      streak++;
+    }
   } else {
     errou[linha][coluna] = false;
     grade[linha][coluna] = num;
   }
+}
+
+bool Jogo::checarVitoria() {
+  for (int i = 0; i < 9; i++) {
+    for (int j = 0; j < 9; i++) {
+      if (grade[i][j] || errou[i][j]) return false;
+    }
+  }
+  return true;
 }
 
 //mostrar na tela 
@@ -731,4 +797,14 @@ void Jogo::desenhar(sf::RenderWindow& window) {
       window.draw(label_continuar);
     }
     window.display(); 
+
+    if (ganhou && desativar_pop_up_vitoria == false) {
+      window.draw(botao_fundo_escuro);
+      window.draw(botao_vitoria);
+      window.draw(label_vitoria);
+      label_vitoria_detalhe.setString("Streak atual: " + std::to_string(streak));
+      window.draw(label_vitoria_detalhe);
+      window.draw(botao_continuar);
+      window.draw(label_continuar);
+    }
   }

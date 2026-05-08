@@ -32,7 +32,7 @@ class Jogo {
     sf::Text titulo;
     sf::Text texto_numero;    
     
-    sf::Text label_erro, label_voltar_jogo, label_volume_jogo, label_musica_jogo, label_musica_trocar, label_pop_up, label_sim_pop_up, label_nao_pop_up, label_pop_detalhe, label_apagar, label_derrota, label_vitoria, label_continuar, label_derrota_detalhe;
+    sf::Text label_erro, label_voltar_jogo, label_volume_jogo, label_musica_jogo, label_musica_trocar, label_pop_up, label_sim_pop_up, label_nao_pop_up, label_pop_detalhe, label_apagar, label_derrota, label_vitoria, label_continuar, label_derrota_detalhe, label_vitoria_detalhe;
 
     sf::RectangleShape botao_voltar_jogo, botao_volume_jogo, botao_musica_jogo, botao_pop_up, botao_sim_pop_up, botao_nao_pop_up, botao_fundo_escuro, botao_apagar, botao_derrota, botao_vitoria, botao_continuar;
 
@@ -59,6 +59,8 @@ class Jogo {
     bool preencher_tabuleiro();
   public:
     void registrarJogada(int linha, int coluna, int num);
+
+    bool checarVitoria();
     
     void gerarNovoJogo(DificuldadeJogo x);
     
