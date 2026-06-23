@@ -1,4 +1,4 @@
-**Bandeira: Brasil (Português)**
+**🇧🇷**
 
 Descrição
 - **Projeto**: Sudoku (versão desktop em C++ com SFML).
@@ -62,7 +62,7 @@ Boas práticas e notas
 Contribuições
 - Sugestões de correções e melhorias são bem-vindas. Abra issues ou envie pull requests contendo descrições das mudanças e razões.
 
-**Flag: United States (English)**
+**🇺🇸**
 
 Description
 - **Project**: Sudoku (desktop C++ version using SFML).
