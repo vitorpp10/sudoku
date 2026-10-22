@@ -20,7 +20,7 @@ Jogo::Jogo(const sf::Vector2u& windowSize)
       label_pop_up(font),
       label_sim_pop_up(font),
       label_nao_pop_up(font),
-      label_pop_detalhe(font), 
+      label_pop_detalhe(font),  
       label_apagar(font),
       label_vitoria(font), 
       label_derrota(font),
